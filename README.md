@@ -20,5 +20,5 @@ https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame<br>
 https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame
 
 
-<a href="https://raw.githubusercontent.com/Neilblaze/buffer2url/master/license.txt"><img src="https://img.shields.io/github/license/Neilblaze/buffer2url?style=flat-square" alt="License"/></a>
+<a href="https://raw.githubusercontent.com/Neilblaze/URL-Dinogame/master/license.txt"><img src="https://img.shields.io/github/license/Neilblaze/URL-Dinogame?style=flat-square" alt="License"/></a>
 
