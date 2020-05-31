@@ -1,6 +1,7 @@
 # URL-Dinogame
 Google's Dinosaur game implementation in URL bar 🦕
-[https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame] [https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame]
+https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame
+https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame
 
 
 #### TODO :~
