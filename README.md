@@ -1,10 +1,7 @@
 # URL-Dinogame
 Google's Dinosaur game implementation in URL bar 🦕
 <br><br>
-<a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame" alt="Repo-Size"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Neilblaze/URL-Dinogame?style=flat-square" alt="License"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame" alt="last-commit"/></a>[![Hits-of-Code](https://hitsofcode.com/github/Neilblaze/URL-Dinogame)](https://hitsofcode.com/view/github/Neilblaze/URL-Dinogame)
-
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-tdd/issues)
-[![HitCount](http://hits.dwyl.io/Neilblaze/URL-Dinogame.svg)](http://hits.dwyl.io/Neilblaze/URL-Dinogame)
+<a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame" alt="Repo-Size"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Neilblaze/URL-Dinogame?style=flat-square" alt="License"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame" alt="last-commit"/></a>[![Hits-of-Code](https://hitsofcode.com/github/Neilblaze/URL-Dinogame)](https://hitsofcode.com/view/github/Neilblaze/URL-Dinogame) &ensp; [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-tdd/issues) &ensp; [![HitCount](http://hits.dwyl.io/Neilblaze/URL-Dinogame.svg)](http://hits.dwyl.io/Neilblaze/URL-Dinogame)
 
 #### TODO :~
 
