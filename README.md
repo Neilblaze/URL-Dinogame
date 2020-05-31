@@ -1,7 +1,7 @@
 # URL-Dinogame
 Google's Dinosaur game implementation in URL bar 🦕
 <br><br>
-<a href="https://github.com/Neilblaze/URL-Dinogame/edit/master/README.md"><img src="https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame" alt="Repo-Size"/></a> &ensp; <a href="https://raw.githubusercontent.com/Neilblaze/URL-Dinogame/master/license.txt"><img src="https://img.shields.io/github/license/Neilblaze/URL-Dinogame?style=flat-square" alt="License"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame/edit/master/README.md"><img src="https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame" alt="last-commit"/></a>
+<a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame" alt="Repo-Size"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Neilblaze/URL-Dinogame?style=flat-square" alt="License"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame" alt="last-commit"/></a>
 
 #### TODO :~
 
