@@ -34,6 +34,6 @@ If you want to contribute, just create a issue and or PR mentioning the update w
 - [ ] Add visualistic UI elements
 - [ ] Recheck
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Neilblaze/URL-Dinogame-checkout)
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/Neilblaze/URL-Dinogame-checkout)<br>
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Neilblaze/URL-Dinogame)
+[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/Neilblaze/URL-Dinogame)<br>
 ### Fork the repo and add a Star to it to make me feel good :D
