@@ -7,12 +7,6 @@ Google's Dinosaur game implementation in URL bar 🦕
 <img src="https://github.com/Neilblaze/URL-Dinogame/blob/master/urldino.gif" width="350" height="350" align="center">
 </p>
 
-#### TODO :~
-
-- [ ] Make it PWA
-- [ ] Add better sound for start/death scheme
-- [ ] Add visualistic UI elements
-- [ ] Recheck
 
 This is a simple implementation of Google's Dinosaur game implementation in URL bar (address bar of browser). Though the game is still in development status, the basic game itself is only 28 KB!
 
@@ -32,3 +26,12 @@ open dino.html
 #### Contributing
 
 If you want to contribute, just create a issue and or PR mentioning the update which you want to do :)
+
+#### TODO :~
+
+- [ ] Make it PWA
+- [ ] Add better sound for start/death scheme
+- [ ] Add visualistic UI elements
+- [ ] Recheck
+
+### Fork the repo and add a Star to it to make me feel good :D
