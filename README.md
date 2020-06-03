@@ -34,4 +34,5 @@ If you want to contribute, just create a issue and or PR mentioning the update w
 - [ ] Add visualistic UI elements
 - [ ] Recheck
 
+[![Deploy to Vercel](/button)](/import/project?template=https://github.com/zeit/now/tree/master/examples/gatsby)
 ### Fork the repo and add a Star to it to make me feel good :D
