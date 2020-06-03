@@ -35,7 +35,7 @@ If you want to contribute, just create a issue and or PR mentioning the update w
 - [ ] Recheck
 
 <a
-  href="/import/project?template=https://github.com/zeit/now/tree/master/examples/gatsby"
+  href="/import/project?template=https://github.com/Neilblaze/URL-Dinogame"
 >
   <img src="https://vercel.com/button" alt="Deploy" />
 </a>
