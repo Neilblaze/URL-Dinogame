@@ -20,7 +20,7 @@ Most of us have used Chrome in some point of our life, be it's on desktop / lapt
 
 ### Instructions :-
 ```
-clone this repo on your local
+git clone this repo on your local
 open dino.html
 ```
 
@@ -31,4 +31,4 @@ open dino.html
 
 #### Contributing
 
-If you want to contribute, just create a issue and or PR mentioning the update you want to give towards this :)
+If you want to contribute, just create a issue and or PR mentioning the update which you want to do :)
