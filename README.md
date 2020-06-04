@@ -1,5 +1,5 @@
 # URL-Dinogame
-Google's Dinosaur game implementation in URL bar 🦕  - https://neilblaze.github.io/URL-Dinogame
+Google's Dinosaur game implementation in URL bar 🦕  - https://neilblaze.github.io/URL-Dinogame/
 <br><br>
 <a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame" alt="Repo-Size"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Neilblaze/URL-Dinogame?style=flat-square" alt="License"/></a> &ensp; <a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/last-commit/Neilblaze/URL-Dinogame" alt="last-commit"/> &ensp; </a>[![Hits-of-Code](https://hitsofcode.com/github/Neilblaze/URL-Dinogame)](https://hitsofcode.com/view/github/Neilblaze/URL-Dinogame) &ensp; [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-tdd/issues)
 
