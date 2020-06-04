@@ -1,1 +1,12 @@
-.error_page{display:none}@media (hover:none) and (pointer:coarse){.welcome_page{display:none}.error_page{display:block}}
+.error_page {
+	display: none
+}
+
+@media (hover:none) and (pointer:coarse) {
+	.welcome_page {
+		display: none
+	}
+	.error_page {
+		display: block
+	}
+}
