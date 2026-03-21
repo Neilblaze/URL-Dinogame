@@ -1,0 +1,458 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f0ebe3;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --accent: #ff5c00;
+    --accent-alt: #5b21b6;
+    --border: #1a1a1a;
+    --border-w: 2.5px;
+    --shadow: 5px 5px 0px #1a1a1a;
+    --shadow-sm: 3px 3px 0px #1a1a1a;
+    --radius: 12px;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Space Mono', monospace;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ────────────────────────────── */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px 28px;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ── Header ────────────────────────────── */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1.4;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    background: var(--accent);
+    color: #fff;
+    padding: 5px 10px;
+    border: var(--border-w) solid var(--border);
+    box-shadow: var(--shadow-sm);
+    border-radius: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+
+/* ── Bento Grid ────────────────────────── */
+
+.bento {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
+}
+
+.card {
+    background: var(--card-bg);
+    border: var(--border-w) solid var(--border);
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.card:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0px #1a1a1a;
+}
+
+.card__label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #999;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ── Card: Score (top-left) ────────────── */
+
+.card--status {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dino-mascot {
+    flex-shrink: 0;
+}
+
+.score-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.highscore-display {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 26px;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.highscore-display small {
+    font-size: 8px;
+    color: #aaa;
+    display: block;
+    margin-top: 5px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+/* ── Card: How to Play (top-right) ─────── */
+
+.card--howto {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.controls-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.controls-hint {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    line-height: 1.6;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.key-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    background: var(--text);
+    color: #fff;
+    padding: 5px 8px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    min-width: 28px;
+}
+
+.howto-note {
+    font-size: 11px;
+    color: #999;
+    line-height: 1.5;
+    margin-top: 2px;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+}
+
+/* ── Card: Legend (middle-left) ─────────── */
+
+.card--legend {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-char {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    flex-shrink: 0;
+}
+
+.legend-char--player { color: var(--accent); }
+.legend-char--food { color: #16a34a; }
+.legend-char--fruit { color: var(--accent-alt); }
+.legend-char--enemy { color: #dc2626; }
+.legend-char--shield { color: #0ea5e9; }
+
+.legend-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.legend-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--text);
+}
+
+.legend-desc {
+    font-size: 10px;
+    color: #999;
+}
+
+/* ── Card: About (middle-right) ────────── */
+
+.card--about {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.about-body {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.about-dino {
+    flex-shrink: 0;
+    opacity: 0.12;
+    align-self: center;
+}
+
+.about-text {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #555;
+    flex: 1;
+}
+
+.about-text strong {
+    color: var(--text);
+}
+
+.about-text code {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+.bookmark-hint {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.6;
+    align-self: flex-start;
+}
+
+.bookmark-hint kbd {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    background: var(--text);
+    color: #fff;
+    padding: 3px 6px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    margin: 0 1px;
+}
+
+/* ── Card: Actions (bottom, full-width) ── */
+
+.card--actions {
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+}
+
+.sound-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    background: var(--text);
+    color: #fff;
+    border: var(--border-w) solid var(--border);
+    box-shadow: var(--shadow-sm);
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    outline: none;
+}
+
+.sound-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #1a1a1a;
+}
+
+.sound-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #1a1a1a;
+}
+
+.credit {
+    font-size: 11px;
+    color: #999;
+}
+
+.credit a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s;
+}
+
+.credit a:hover {
+    border-color: var(--accent);
+}
+
+/* ── Mobile ────────────────────────────── */
+
+.error_page {
+    display: none;
+}
+
+.mobile-msg {
+    display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .welcome_page {
+        display: none !important;
+    }
+
+    .mobile-msg {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+        padding: 32px;
+        gap: 16px;
+    }
+
+    .mobile-msg h2 {
+        font-family: 'Press Start 2P', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .mobile-msg p {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .error_page {
+        display: block;
+    }
+}
+
+/* ── Responsive (small desktops) ───────── */
+
+@media (max-width: 700px) {
+    .page {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .bento {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        gap: 10px;
+    }
+
+    .card--status  { grid-column: 1; grid-row: 1; }
+    .card--howto   { grid-column: 1; grid-row: 2; }
+    .card--legend  { grid-column: 1; grid-row: 3; }
+    .card--about   { grid-column: 1; grid-row: 4; }
+    .card--actions { grid-column: 1; grid-row: 5; }
+
+    .logo { font-size: 13px; }
+    .highscore-display { font-size: 20px; }
+    .about-dino { display: none; }
+}
+
+/* ── Subtle scanline overlay ───────────── */
+
+.page::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 4px,
+        rgba(0,0,0,0.012) 4px,
+        rgba(0,0,0,0.012) 5px
+    );
+    pointer-events: none;
+    z-index: 999;
+}

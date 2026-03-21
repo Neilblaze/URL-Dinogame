@@ -4,9 +4,10 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
-    <meta name="description" content="">
+    <meta name="description"
+        content="A tiny dinosaur game played entirely in your browser's URL bar. Built with vanilla JS.">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
-    <title>Dino - C</title>
+    <title>Dino-C | URL Bar Game</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -14,28 +15,193 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8f8f8f">
     <meta name="apple-mobile-web-app-title" content="Dino-c!">
     <meta name="application-name" content="Dino-c!">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="msapplication-TileColor" content="#f0ebe3">
+    <meta name="theme-color" content="#f0ebe3">
+    <link rel="stylesheet" type="text/css" href="styles.min.css">
     <script src="script.min.js" defer="defer"></script>
-    <link rel="stylesheet" type="text/css" href="styles.min.3acc4cd6.css">
 </head>
 
 <body class="no-js preload">
-    <h2 style="font-family: serif;">Dino - C ( Google's Dinosaur game implementation in URL bar )</h2>
-    <p style="font-family: monospace; font-size: 14px;">
-        <span class="error_page"><strong>Sorry, Dino-c! requires a non-mobile device to play.
-                :(</strong><br><br><br></span>High Score: <span id="high-score">--</span><br><br>Help c eat as much food
-        as he can while avoiding the enemies!<br>Played in your browser's address bar. (Works best on Windows &
-        Linux)<br><br><a
-            href="javascript:(function(){ var jsCode=document.createElement('script');jsCode.setAttribute('src','/script.min.js?bustcache='+new Date().getTime());document.body.appendChild(jsCode);}());">Bookmark
-            this</a> to play me on any
-        webpage!<br><br><br>Help:<br><br>c&nbsp;&nbsp;You<br>&middot;&nbsp;&nbsp;Food<br>&#9643;&nbsp;&nbsp;Fruit (10
-        points)<br>&#9731;&nbsp;&nbsp;Enemy<br>&#9730;&nbsp;&nbsp;Shield<br><br><br>Controls:<br><br>[Up
-        Key]&nbsp;&nbsp;Jump<br><br><br></p><button onclick="toggleSound()" type="button">Sound: on</button>
-    <audio id="start" src="start.mp3" preload="auto"></audio>
-    <audio id="death" src="start.mp3" preload="auto"></audio>
-    <br><br>
-    <center>Made by Pratyay Banerjee</center>
+
+    <!-- Mobile fallback -->
+    <div class="mobile-msg">
+        <h2>Dino-C requires<br>a desktop browser</h2>
+        <p>The game runs inside your URL bar &mdash; you need a keyboard to play.</p>
+    </div>
+
+    <!-- Main page -->
+    <div class="page welcome_page">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">DINO<span>-C</span></div>
+            <div class="badge">URL BAR GAME</div>
+        </header>
+
+        <!-- Bento Grid -->
+        <main class="bento">
+
+            <!-- Top-left: Dino + High Score -->
+            <section class="card card--status" id="card-status">
+                <!-- 8-bit pixel dino SVG -->
+                <svg class="dino-mascot" viewBox="0 0 14 16" width="52" height="60" xmlns="http://www.w3.org/2000/svg"
+                    fill="#ff5c00" aria-hidden="true">
+                    <!-- Head -->
+                    <rect x="8" y="0" width="6" height="1" />
+                    <rect x="7" y="1" width="7" height="1" />
+                    <rect x="7" y="2" width="1" height="1" />
+                    <rect x="9" y="2" width="5" height="1" />
+                    <rect x="7" y="3" width="7" height="1" />
+                    <!-- Jaw -->
+                    <rect x="9" y="4" width="3" height="1" />
+                    <!-- Arms + body -->
+                    <rect x="1" y="5" width="1" height="1" />
+                    <rect x="6" y="5" width="7" height="1" />
+                    <rect x="1" y="6" width="2" height="1" />
+                    <rect x="5" y="6" width="7" height="1" />
+                    <!-- Full body -->
+                    <rect x="1" y="7" width="12" height="1" />
+                    <rect x="2" y="8" width="10" height="1" />
+                    <rect x="3" y="9" width="9" height="1" />
+                    <!-- Narrowing -->
+                    <rect x="4" y="10" width="7" height="1" />
+                    <rect x="5" y="11" width="5" height="1" />
+                    <rect x="5" y="12" width="4" height="1" />
+                    <!-- Legs -->
+                    <rect x="5" y="13" width="2" height="1" />
+                    <rect x="8" y="13" width="2" height="1" />
+                    <rect x="5" y="14" width="1" height="1" />
+                    <rect x="9" y="14" width="1" height="1" />
+                    <!-- Eye (cut-out, background color) -->
+                    <rect x="8" y="2" width="1" height="1" fill="#ffffff" />
+                </svg>
+                <div class="score-block">
+                    <span class="card__label">High Score</span>
+                    <div class="highscore-display">
+                        <span id="high-score">--</span>
+                        <small>points</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top-right: Controls -->
+            <section class="card card--howto" id="card-howto">
+                <span class="card__label">How to Play</span>
+                <div class="controls-row">
+                    <div class="controls-hint">
+                        <span class="key-badge">UP</span>
+                        Jump over enemies
+                    </div>
+                    <div class="controls-hint">
+                        <span class="key-badge">ANY</span>
+                        Start / Restart
+                    </div>
+                </div>
+                <p class="howto-note">
+                    Look at the URL bar above &mdash; the game plays there.
+                </p>
+            </section>
+
+            <!-- Middle-left: Legend (single column) -->
+            <section class="card card--legend" id="card-legend">
+                <span class="card__label">Legend</span>
+                <div class="legend-list">
+                    <div class="legend-item">
+                        <span class="legend-char legend-char--player">C</span>
+                        <div class="legend-meta">
+                            <span class="legend-name">You</span>
+                            <span class="legend-desc">The player</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-char legend-char--food">&bull;</span>
+                        <div class="legend-meta">
+                            <span class="legend-name">Food</span>
+                            <span class="legend-desc">+1 pt</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-char legend-char--fruit">@</span>
+                        <div class="legend-meta">
+                            <span class="legend-name">Fruit</span>
+                            <span class="legend-desc">+5 pts</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-char legend-char--enemy">X</span>
+                        <div class="legend-meta">
+                            <span class="legend-name">Enemy</span>
+                            <span class="legend-desc">-1 pt</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-char legend-char--shield">*</span>
+                        <div class="legend-meta">
+                            <span class="legend-name">Shield</span>
+                            <span class="legend-desc">5s invincible</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Middle-right: About (wider) -->
+            <section class="card card--about" id="card-about">
+                <span class="card__label">About</span>
+                <div class="about-body">
+                    <!-- Large decorative pixel dino (faded) -->
+                    <svg class="about-dino" viewBox="0 0 14 16" width="80" height="92"
+                        xmlns="http://www.w3.org/2000/svg" fill="#1a1a1a" aria-hidden="true">
+                        <rect x="8" y="0" width="6" height="1" />
+                        <rect x="7" y="1" width="7" height="1" />
+                        <rect x="7" y="2" width="1" height="1" />
+                        <rect x="9" y="2" width="5" height="1" />
+                        <rect x="7" y="3" width="7" height="1" />
+                        <rect x="9" y="4" width="3" height="1" />
+                        <rect x="1" y="5" width="1" height="1" />
+                        <rect x="6" y="5" width="7" height="1" />
+                        <rect x="1" y="6" width="2" height="1" />
+                        <rect x="5" y="6" width="7" height="1" />
+                        <rect x="1" y="7" width="12" height="1" />
+                        <rect x="2" y="8" width="10" height="1" />
+                        <rect x="3" y="9" width="9" height="1" />
+                        <rect x="4" y="10" width="7" height="1" />
+                        <rect x="5" y="11" width="5" height="1" />
+                        <rect x="5" y="12" width="4" height="1" />
+                        <rect x="5" y="13" width="2" height="1" />
+                        <rect x="8" y="13" width="2" height="1" />
+                        <rect x="5" y="14" width="1" height="1" />
+                        <rect x="9" y="14" width="1" height="1" />
+                        <rect x="8" y="2" width="1" height="1" fill="#f0ebe3" />
+                    </svg>
+                    <p class="about-text">
+                        A tiny re-imagining of <strong>Chrome's dinosaur game</strong> &mdash;
+                        played entirely inside the browser URL bar.
+                        Help <code>C</code> eat food and dodge enemies!
+                        <br><br>
+                        Works best on <strong>Windows &amp; Linux</strong>. Press any key to begin.
+                    </p>
+                </div>
+                <p class="bookmark-hint">
+                    Press <kbd>Ctrl</kbd>+<kbd>D</kbd> (Windows) or <kbd>Cmd</kbd>+<kbd>D</kbd> (Mac) to bookmark
+                </p>
+            </section>
+
+            <!-- Bottom: Actions bar -->
+            <div class="card card--actions" id="card-actions">
+                <button class="sound-btn" onclick="toggleSound()" type="button">Sound: on</button>
+                <span class="credit">Made by <a href="https://github.com/Neilblaze" target="_blank"
+                        rel="noopener">Pratyay Banerjee</a></span>
+            </div>
+
+        </main>
+
+    </div>
+
+    <audio id="countdown" src="assets/countdown3s.mp3" preload="auto"></audio>
+    <audio id="gameover" src="assets/gameover.mp3" preload="auto"></audio>
+    <audio id="faaah" src="assets/faaah.mp3" preload="auto"></audio>
+    <audio id="toggle-sound" src="assets/toggle.mp3" preload="auto"></audio>
+
 </body>
 
 </html>
