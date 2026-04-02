@@ -21,7 +21,8 @@
     --radius: 12px;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     overflow: hidden;
     font-family: 'Space Mono', monospace;
@@ -82,7 +83,7 @@ html, body {
 .bento {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto auto auto;
     gap: 14px;
     flex: 1;
     min-height: 0;
@@ -200,7 +201,7 @@ html, body {
     padding-top: 8px;
 }
 
-/* ── Card: Legend (middle-left) ─────────── */
+/* ── Card: Legend (middle-left upper) ──── */
 
 .card--legend {
     grid-column: 1 / 2;
@@ -236,11 +237,25 @@ html, body {
     flex-shrink: 0;
 }
 
-.legend-char--player { color: var(--accent); }
-.legend-char--food { color: #16a34a; }
-.legend-char--fruit { color: var(--accent-alt); }
-.legend-char--enemy { color: #dc2626; }
-.legend-char--shield { color: #0ea5e9; }
+.legend-char--player {
+    color: var(--accent);
+}
+
+.legend-char--food {
+    color: #16a34a;
+}
+
+.legend-char--fruit {
+    color: var(--accent-alt);
+}
+
+.legend-char--enemy {
+    color: #dc2626;
+}
+
+.legend-char--shield {
+    color: #0ea5e9;
+}
 
 .legend-meta {
     display: flex;
@@ -259,11 +274,163 @@ html, body {
     color: #999;
 }
 
-/* ── Card: About (middle-right) ────────── */
+.card--settings {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px 18px;
+}
+
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.settings-group .card__label {
+    margin-bottom: 2px;
+}
+
+.difficulty-toggle {
+    display: flex;
+    gap: 0;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.diff-btn {
+    flex: 1;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 7px 0;
+    border: none;
+    background: var(--bg);
+    color: #999;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    outline: none;
+    position: relative;
+}
+
+.diff-btn+.diff-btn {
+    border-left: 2px solid var(--border);
+}
+
+.diff-btn:hover {
+    background: #e8e2d8;
+}
+
+.diff-btn.active {
+    background: var(--text);
+    color: #fff;
+}
+
+.diff-btn.active[data-diff="easy"] {
+    background: #16a34a;
+}
+
+.diff-btn.active[data-diff="med"] {
+    background: var(--accent);
+}
+
+.diff-btn.active[data-diff="hard"] {
+    background: #dc2626;
+}
+
+/* Speed dial / range */
+.speed-dial {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.speed-track-wrap {
+    position: relative;
+    padding: 0 2px;
+}
+
+.speed-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #16a34a 0%, var(--accent) 50%, #dc2626 100%);
+    outline: none;
+    border: 2px solid var(--border);
+    cursor: pointer;
+}
+
+.speed-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+    cursor: grab;
+    transition: transform 0.1s;
+}
+
+.speed-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.speed-range::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+}
+
+.speed-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+    cursor: grab;
+}
+
+.speed-ticks {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 6px 0;
+}
+
+.speed-ticks span {
+    width: 2px;
+    height: 6px;
+    background: #ccc;
+    border-radius: 1px;
+}
+
+.speed-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    color: #999;
+    padding: 0 2px;
+}
+
+.speed-labels span:nth-child(2) {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1.5px solid #ddd;
+}
 
 .card--about {
     grid-column: 2 / 3;
-    grid-row: 2 / 3;
+    grid-row: 2 / 4;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -320,11 +487,9 @@ html, body {
     margin: 0 1px;
 }
 
-/* ── Card: Actions (bottom, full-width) ── */
-
 .card--actions {
     grid-column: 1 / -1;
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -372,8 +537,6 @@ html, body {
     border-color: var(--accent);
 }
 
-/* ── Mobile ────────────────────────────── */
-
 .error_page {
     display: none;
 }
@@ -392,22 +555,137 @@ html, body {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
+        min-height: 100dvh;
         text-align: center;
-        padding: 32px;
-        gap: 16px;
+        padding: 28px 24px;
+        gap: 18px;
+        background: var(--bg);
+    }
+
+    .mobile-dino {
+        animation: dino-bounce 1.6s ease-in-out infinite;
+    }
+
+    @keyframes dino-bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    /* Badge */
+    .mobile-badge {
+        font-family: 'Press Start 2P', monospace;
+        font-size: 7px;
+        background: var(--accent);
+        color: #fff;
+        padding: 5px 12px;
+        border: var(--border-w) solid var(--border);
+        box-shadow: var(--shadow-sm);
+        border-radius: 6px;
+        letter-spacing: 0.5px;
     }
 
     .mobile-msg h2 {
         font-family: 'Press Start 2P', monospace;
-        font-size: 14px;
-        line-height: 1.6;
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--text);
     }
 
-    .mobile-msg p {
+    .mobile-why {
+        font-family: 'Space Mono', monospace;
         font-size: 13px;
         color: #666;
+        line-height: 1.7;
+        max-width: 340px;
+    }
+
+    .mobile-why strong {
+        color: var(--text);
+    }
+
+    .mobile-reqs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .mobile-req {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--card-bg);
+        border: var(--border-w) solid var(--border);
+        box-shadow: var(--shadow-sm);
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-family: 'Press Start 2P', monospace;
+        font-size: 8px;
+        color: var(--text);
+        transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .mobile-req:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0px #1a1a1a;
+    }
+
+    .mobile-req-icon {
+        font-size: 18px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg);
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    /* Hint */
+    .mobile-hint {
+        font-family: 'Space Mono', monospace;
+        font-size: 11px;
+        color: #888;
         line-height: 1.6;
+        max-width: 300px;
+        border-top: 1.5px dashed #ccc;
+        padding-top: 14px;
+        margin-top: 4px;
+    }
+
+    .mobile-hint strong {
+        color: var(--accent);
+    }
+
+    /* Credit */
+    .mobile-credit {
+        font-family: 'Space Mono', monospace;
+        font-size: 10px;
+        color: #aaa;
+        margin-top: 6px;
+    }
+
+    .mobile-credit a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.15s;
+    }
+
+    .mobile-credit a:hover {
+        border-color: var(--accent);
     }
 
     .error_page {
@@ -425,34 +703,65 @@ html, body {
 
     .bento {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto auto;
         gap: 10px;
     }
 
-    .card--status  { grid-column: 1; grid-row: 1; }
-    .card--howto   { grid-column: 1; grid-row: 2; }
-    .card--legend  { grid-column: 1; grid-row: 3; }
-    .card--about   { grid-column: 1; grid-row: 4; }
-    .card--actions { grid-column: 1; grid-row: 5; }
+    .card--status {
+        grid-column: 1;
+        grid-row: 1;
+    }
 
-    .logo { font-size: 13px; }
-    .highscore-display { font-size: 20px; }
-    .about-dino { display: none; }
+    .card--howto {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .card--legend {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .card--settings {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .card--about {
+        grid-column: 1;
+        grid-row: 5;
+    }
+
+    .card--actions {
+        grid-column: 1;
+        grid-row: 6;
+    }
+
+    .logo {
+        font-size: 13px;
+    }
+
+    .highscore-display {
+        font-size: 20px;
+    }
+
+    .about-dino {
+        display: none;
+    }
 }
-
-/* ── Subtle scanline overlay ───────────── */
 
 .page::after {
     content: '';
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 4px,
-        rgba(0,0,0,0.012) 4px,
-        rgba(0,0,0,0.012) 5px
-    );
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 4px,
+            rgba(0, 0, 0, 0.012) 4px,
+            rgba(0, 0, 0, 0.012) 5px);
     pointer-events: none;
     z-index: 999;
 }

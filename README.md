@@ -1,6 +1,8 @@
 # URL-Dinogame 🦖
 
-A lightweight implemention of the classic Dinosaur game, played entirely within the browser's address bar. Play the [Live Demo](https://neilblaze.github.io/URL-Dinogame/)! ✨
+A lightweight implemention of the classic Dinosaur game, played entirely within the browser's address bar. 
+
+Play the [Live Demo](https://neilblaze.github.io/URL-Dinogame/) ✨
 
 <p align="left">
     <a href="https://github.com/Neilblaze/URL-Dinogame"><img src="https://img.shields.io/github/repo-size/Neilblaze/URL-Dinogame" alt="Repo-Size"/></a>

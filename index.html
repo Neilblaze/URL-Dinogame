@@ -19,15 +19,55 @@
     <meta name="theme-color" content="#f0ebe3">
     <link rel="stylesheet" type="text/css" href="styles.min.css">
     <script src="script.min.js" defer="defer"></script>
+    <script src="settings.js" defer="defer"></script>
 </head>
 
 <body class="no-js preload">
 
     <!-- Mobile fallback -->
     <div class="mobile-msg">
-        <h2>Dino-C requires<br>a desktop browser</h2>
-        <p>The game runs inside your URL bar &mdash; you need a keyboard to play.</p>
+        <!-- Pixel dino -->
+        <svg class="mobile-dino" viewBox="0 0 14 16" width="64" height="74" xmlns="http://www.w3.org/2000/svg"
+            fill="#ff5c00" aria-hidden="true">
+            <rect x="8" y="0" width="6" height="1" />
+            <rect x="7" y="1" width="7" height="1" />
+            <rect x="7" y="2" width="1" height="1" />
+            <rect x="9" y="2" width="5" height="1" />
+            <rect x="7" y="3" width="7" height="1" />
+            <rect x="9" y="4" width="3" height="1" />
+            <rect x="1" y="5" width="1" height="1" />
+            <rect x="6" y="5" width="7" height="1" />
+            <rect x="1" y="6" width="2" height="1" />
+            <rect x="5" y="6" width="7" height="1" />
+            <rect x="1" y="7" width="12" height="1" />
+            <rect x="2" y="8" width="10" height="1" />
+            <rect x="3" y="9" width="9" height="1" />
+            <rect x="4" y="10" width="7" height="1" />
+            <rect x="5" y="11" width="5" height="1" />
+            <rect x="5" y="12" width="4" height="1" />
+            <rect x="5" y="13" width="2" height="1" />
+            <rect x="8" y="13" width="2" height="1" />
+            <rect x="5" y="14" width="1" height="1" />
+            <rect x="9" y="14" width="1" height="1" />
+            <rect x="8" y="2" width="1" height="1" fill="#f0ebe3" />
+        </svg>
+
+        <div class="mobile-badge">URL BAR GAME</div>
+
+        <h2>Desktop only!</h2>
+        <p class="mobile-why">
+            Dino-C plays entirely inside your browser's <strong>URL&nbsp;bar</strong> &mdash;
+            it needs a full keyboard and a visible address bar to work.
+        </p>
+
+        <p class="mobile-hint">
+            Bookmark this page and come back on a <strong>laptop&nbsp;or&nbsp;PC</strong> for the best experience!
+        </p>
+
+        <span class="mobile-credit">Made by <a href="https://github.com/Neilblaze" target="_blank"
+                rel="noopener">Pratyay Banerjee</a></span>
     </div>
+
 
     <!-- Main page -->
     <div class="page welcome_page">
@@ -102,7 +142,7 @@
                 </p>
             </section>
 
-            <!-- Middle-left: Legend (single column) -->
+            <!-- Middle-left: Legend (upper) -->
             <section class="card card--legend" id="card-legend">
                 <span class="card__label">Legend</span>
                 <div class="legend-list">
@@ -139,6 +179,37 @@
                         <div class="legend-meta">
                             <span class="legend-name">Shield</span>
                             <span class="legend-desc">5s invincible</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Middle-left lower: Settings -->
+            <section class="card card--settings" id="card-settings">
+                <!-- Difficulty -->
+                <div class="settings-group">
+                    <span class="card__label">Difficulty</span>
+                    <div class="difficulty-toggle" id="difficulty-toggle">
+                        <button class="diff-btn" data-diff="easy" type="button">Easy</button>
+                        <button class="diff-btn active" data-diff="med" type="button">Med</button>
+                        <button class="diff-btn" data-diff="hard" type="button">Hard</button>
+                    </div>
+                </div>
+                <!-- Game Speed -->
+                <div class="settings-group">
+                    <span class="card__label">Game Speed</span>
+                    <div class="speed-dial">
+                        <div class="speed-track-wrap">
+                            <input type="range" id="speed-slider" min="50" max="200" value="100" step="5"
+                                class="speed-range">
+                            <div class="speed-ticks">
+                                <span></span><span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <div class="speed-labels">
+                            <span>Slow</span>
+                            <span id="speed-value">1.0×</span>
+                            <span>Fast</span>
                         </div>
                     </div>
                 </div>
