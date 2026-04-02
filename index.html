@@ -116,7 +116,7 @@
                     <rect x="8" y="2" width="1" height="1" fill="#ffffff" />
                 </svg>
                 <div class="score-block">
-                    <span class="card__label">High Score</span>
+                    <span class="card__label" id="score-label">High Score</span>
                     <div class="highscore-display">
                         <span id="high-score">--</span>
                         <small>points</small>
@@ -197,7 +197,10 @@
                 </div>
                 <!-- Game Speed -->
                 <div class="settings-group">
-                    <span class="card__label">Game Speed</span>
+                    <div class="settings-header">
+                        <span class="card__label">Game Speed</span>
+                        <span id="speed-value">1.0×</span>
+                    </div>
                     <div class="speed-dial">
                         <div class="speed-track-wrap">
                             <input type="range" id="speed-slider" min="50" max="200" value="100" step="5"
@@ -208,7 +211,6 @@
                         </div>
                         <div class="speed-labels">
                             <span>Slow</span>
-                            <span id="speed-value">1.0×</span>
                             <span>Fast</span>
                         </div>
                     </div>
@@ -249,7 +251,8 @@
                         played entirely inside the browser URL bar.
                         Help <code>C</code> eat food and dodge enemies!
                         <br><br>
-                        Works best on <strong>Windows &amp; Linux</strong>. Press any key to begin.
+                        Works best on all OS & not limited to <strong>Mac, Windows &amp; Linux</strong>. Press any key
+                        to begin.
                     </p>
                 </div>
                 <p class="bookmark-hint">
