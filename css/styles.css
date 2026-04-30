@@ -116,8 +116,6 @@ body {
     display: block;
 }
 
-/* ── Card: Score (top-left) ────────────── */
-
 .card--status {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
@@ -152,8 +150,6 @@ body {
     font-weight: 400;
     letter-spacing: 1px;
 }
-
-/* ── Card: How to Play (top-right) ─────── */
 
 .card--howto {
     grid-column: 2 / 3;
@@ -201,8 +197,6 @@ body {
     border-top: 1px solid #eee;
     padding-top: 8px;
 }
-
-/* ── Card: Legend (middle-left upper) ──── */
 
 .card--legend {
     grid-column: 1 / 2;

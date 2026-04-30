@@ -4,37 +4,64 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
-    <meta name="description"
-        content="A tiny dinosaur game played entirely in your browser's URL bar. Built with vanilla JS.">
+    <meta name="description" content="A tiny dinosaur game played entirely in your browser's URL bar. Built with vanilla JS.">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
-    <title>Dino-C | URL Bar Game</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <!--<link rel="manifest" href="/site.webmanifest">-->
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8f8f8f">
-    <meta name="apple-mobile-web-app-title" content="Dino-c!">
-    <meta name="application-name" content="Dino-c!">
-    <meta name="msapplication-TileColor" content="#f0ebe3">
+    <title>URL-Dinogame</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <meta name="apple-mobile-web-app-title" content="URL-Dinogame">
+    <meta name="application-name" content="URL-Dinogame">
+    <meta name="msapplication-TileColor" content="#1a1a1a">
     <meta name="theme-color" content="#f0ebe3">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="multiplayer.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/multiplayer.css">
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-    <script src="idb-store.js" defer="defer"></script>
-    <script src="toast.js" defer="defer"></script>
-    <script src="multiplayer.js" defer="defer"></script>
-    <script src="room-ui.js" defer="defer"></script>
-    <script src="script.js" defer="defer"></script>
-    <script src="settings.js" defer="defer"></script>
+    <script src="/js/idb-store.js" defer="defer"></script>
+    <script src="/js/toast.js" defer="defer"></script>
+    <script src="/js/multiplayer.js" defer="defer"></script>
+    <script src="/js/room-ui.js" defer="defer"></script>
+    <script src="/js/script.js" defer="defer"></script>
+    <script src="/js/settings.js" defer="defer"></script>
+    <script src="/js/click-sound.js" defer="defer"></script>
 </head>
 
 <body class="no-js preload">
+    <a href="https://github.com/Neilblaze/URL-Dinogame" class="github-corner" aria-label="View source on GitHub">
+        <svg width="80" height="80" viewBox="0 0 250 250" style="fill: #151513; color: #fff; position: absolute; top: 0; border: 0; right: 0; z-index: 999;" aria-hidden="true" class="z-50">
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+            <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px" class="octo-arm"></path>
+            <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+        </svg>
+    </a>
 
-    <!-- Mobile fallback -->
+    <style>
+        .github-corner:hover .octo-arm {
+            animation: octocat-wave 560ms ease-in-out;
+        }
+
+        @keyframes octocat-wave {
+            0%, 100% {
+                transform: rotate(0);
+            }
+            20%, 60% {
+                transform: rotate(-25deg);
+            }
+            40%, 80% {
+                transform: rotate(10deg);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .github-corner:hover .octo-arm {
+                animation: none;
+            }
+            .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out;
+            }
+        }
+    </style>
+
     <div class="mobile-msg">
-        <!-- Pixel dino -->
-        <svg class="mobile-dino" viewBox="0 0 14 16" width="64" height="74" xmlns="http://www.w3.org/2000/svg"
-            fill="#ff5c00" aria-hidden="true">
+        <svg class="mobile-dino" viewBox="0 0 14 16" width="64" height="74" xmlns="http://www.w3.org/2000/svg" fill="#ff5c00" aria-hidden="true">
             <rect x="8" y="0" width="6" height="1" />
             <rect x="7" y="1" width="7" height="1" />
             <rect x="7" y="2" width="1" height="1" />
@@ -62,7 +89,7 @@
 
         <h2>Desktop only!</h2>
         <p class="mobile-why">
-            Dino-C plays entirely inside your browser's <strong>URL&nbsp;bar</strong> &mdash;
+            URL-Dinogame plays entirely inside your browser's <strong>URL&nbsp;bar</strong> &mdash;
             it needs a full keyboard and a visible address bar to work.
         </p>
 
@@ -70,59 +97,45 @@
             Bookmark this page and come back on a <strong>laptop&nbsp;or&nbsp;PC</strong> for the best experience!
         </p>
 
-        <span class="mobile-credit">Made by <a href="https://github.com/Neilblaze" target="_blank"
-                rel="noopener">Pratyay Banerjee</a></span>
+        <span class="mobile-credit">
+            Made by <a href="https://github.com/Neilblaze" target="_blank" rel="noopener">Pratyay Banerjee</a>
+        </span>
     </div>
 
-
-    <!-- Main page -->
     <div class="page welcome_page">
 
-        <!-- Header -->
         <header class="header">
-            <div class="logo">DINO<span>-C</span></div>
+            <div class="logo">URL-<span>Dinogame</span></div>
             <button class="mp-fab" id="mp-fab" type="button" aria-label="Open Multiplayer">
-                <img src="https://res.cloudinary.com/dmlwye965/image/upload/v1777545974/33308_uwaruj.png"
-                    class="mp-fab__icon" style="filter: invert(1);" alt="🎮">
+                <img src="https://res.cloudinary.com/dmlwye965/image/upload/v1777545974/33308_uwaruj.png" class="mp-fab__icon" style="filter: invert(1);" alt="🎮">
                 <span class="mp-fab__label">Multiplayer</span>
             </button>
         </header>
 
-        <!-- Bento Grid -->
         <main class="bento">
 
-            <!-- Top-left: Dino + High Score -->
             <section class="card card--status" id="card-status">
-                <!-- 8-bit pixel dino SVG -->
-                <svg class="dino-mascot" viewBox="0 0 14 16" width="52" height="60" xmlns="http://www.w3.org/2000/svg"
-                    fill="#ff5c00" aria-hidden="true">
-                    <!-- Head -->
+                <svg class="dino-mascot" viewBox="0 0 14 16" width="52" height="60" xmlns="http://www.w3.org/2000/svg" fill="#ff5c00" aria-hidden="true">
                     <rect x="8" y="0" width="6" height="1" />
                     <rect x="7" y="1" width="7" height="1" />
                     <rect x="7" y="2" width="1" height="1" />
                     <rect x="9" y="2" width="5" height="1" />
                     <rect x="7" y="3" width="7" height="1" />
-                    <!-- Jaw -->
                     <rect x="9" y="4" width="3" height="1" />
-                    <!-- Arms + body -->
                     <rect x="1" y="5" width="1" height="1" />
                     <rect x="6" y="5" width="7" height="1" />
                     <rect x="1" y="6" width="2" height="1" />
                     <rect x="5" y="6" width="7" height="1" />
-                    <!-- Full body -->
                     <rect x="1" y="7" width="12" height="1" />
                     <rect x="2" y="8" width="10" height="1" />
                     <rect x="3" y="9" width="9" height="1" />
-                    <!-- Narrowing -->
                     <rect x="4" y="10" width="7" height="1" />
                     <rect x="5" y="11" width="5" height="1" />
                     <rect x="5" y="12" width="4" height="1" />
-                    <!-- Legs -->
                     <rect x="5" y="13" width="2" height="1" />
                     <rect x="8" y="13" width="2" height="1" />
                     <rect x="5" y="14" width="1" height="1" />
                     <rect x="9" y="14" width="1" height="1" />
-                    <!-- Eye (cut-out, background color) -->
                     <rect x="8" y="2" width="1" height="1" fill="#ffffff" />
                 </svg>
                 <div class="score-block">
@@ -134,7 +147,6 @@
                 </div>
             </section>
 
-            <!-- Top-right: Controls -->
             <section class="card card--howto" id="card-howto">
                 <span class="card__label">How to Play</span>
                 <div class="controls-row">
@@ -152,7 +164,6 @@
                 </p>
             </section>
 
-            <!-- Middle-left: Legend (upper) -->
             <section class="card card--legend" id="card-legend">
                 <span class="card__label">Legend</span>
                 <div class="legend-list">
@@ -194,9 +205,7 @@
                 </div>
             </section>
 
-            <!-- Middle-left lower: Settings -->
             <section class="card card--settings" id="card-settings">
-                <!-- Difficulty -->
                 <div class="settings-group">
                     <span class="card__label">Difficulty</span>
                     <div class="difficulty-toggle" id="difficulty-toggle">
@@ -205,7 +214,6 @@
                         <button class="diff-btn" data-diff="hard" type="button">Hard</button>
                     </div>
                 </div>
-                <!-- Game Speed -->
                 <div class="settings-group">
                     <div class="settings-header">
                         <span class="card__label">Game Speed</span>
@@ -227,13 +235,10 @@
                 </div>
             </section>
 
-            <!-- Middle-right: About (wider) -->
             <section class="card card--about" id="card-about">
                 <span class="card__label">About</span>
                 <div class="about-body">
-                    <!-- Large decorative pixel dino (faded) -->
-                    <svg class="about-dino" viewBox="0 0 14 16" width="80" height="92"
-                        xmlns="http://www.w3.org/2000/svg" fill="#1a1a1a" aria-hidden="true">
+                    <svg class="about-dino" viewBox="0 0 14 16" width="80" height="92" xmlns="http://www.w3.org/2000/svg" fill="#1a1a1a" aria-hidden="true">
                         <rect x="8" y="0" width="6" height="1" />
                         <rect x="7" y="1" width="7" height="1" />
                         <rect x="7" y="2" width="1" height="1" />
@@ -270,9 +275,8 @@
                 </p>
             </section>
 
-            <!-- Bottom: Actions bar -->
             <div class="card card--actions" id="card-actions">
-                <button class="sound-btn" onclick="toggleSound()" type="button">Sound: on</button>
+                <button class="sound-btn" onclick="toggleSound()" type="button">🔊 Sound: on</button>
                 <span class="credit">Made by <a href="https://github.com/Neilblaze" target="_blank"
                         rel="noopener">Pratyay Banerjee</a></span>
             </div>
@@ -282,13 +286,13 @@
     </div>
 
     <audio id="countdown" src="assets/countdown3s.mp3" preload="auto"></audio>
-    <audio id="gameover" src="assets/gameover.mp3" preload="auto"></audio>
+    <audio id="gameover" src="assets/faaah.mp3" preload="auto"></audio>
     <audio id="faaah" src="assets/faaah.mp3" preload="auto"></audio>
-    <audio id="toggle-sound" src="assets/toggle.mp3" preload="auto"></audio>
+    <audio id="toggle-sound" src="assets/switch-on.mp3" preload="auto"></audio>
     <audio id="join-sound" src="assets/join.mp3" preload="auto"></audio>
     <audio id="leave-sound" src="assets/leave.mp3" preload="auto"></audio>
+    <audio id="click-sound" src="assets/click-soft.mp3" preload="auto"></audio>
 
-    <!-- Multiplayer Modal -->
     <div class="mp-modal-overlay" id="mp-modal-overlay">
         <div class="mp-modal" role="dialog" aria-labelledby="mp-modal-title" aria-modal="true">
             <div class="mp-modal__header">
@@ -300,7 +304,6 @@
             </div>
             <div class="mp-modal__body">
 
-                <!-- Screen 1: Identity -->
                 <div class="mp-screen mp-screen--active" id="mp-screen-identity">
                     <label class="mp-input-label" for="mp-name-input">Your Name:</label>
                     <input type="text" id="mp-name-input" class="mp-name-input" maxlength="16"
@@ -311,24 +314,23 @@
                     </div>
                 </div>
 
-                <!-- Screen 2A: Join Instructions -->
                 <div class="mp-screen" id="mp-screen-join">
-                    <div style="text-align: center; padding: 20px;">
-                        <p
-                            style="font-family: 'Space Mono', monospace; font-size: 12px; color: #666; margin-bottom: 16px;">
-                            To join a multiplayer game, you need an <strong>invite link</strong> from the host.
-                        </p>
-                        <p
-                            style="font-family: 'Space Mono', monospace; font-size: 11px; color: #999; margin-bottom: 20px;">
-                            The host can copy the invite link from their lobby screen and share it with you.
-                        </p>
-                        <div class="mp-btn-row">
-                            <button class="mp-btn mp-btn--secondary" id="mp-btn-back" type="button">← Back</button>
-                        </div>
+                    <label class="mp-input-label" for="mp-link-input">Invite Link / Room Code:</label>
+                    <input type="text" id="mp-link-input" class="mp-name-input" placeholder="Paste link or code here..."
+                        autocomplete="off">
+
+                    <label class="mp-input-label" for="mp-join-name-input" style="margin-top: 12px;">Your Name:</label>
+                    <input type="text" id="mp-join-name-input" class="mp-name-input" maxlength="16"
+                        placeholder="Enter your name" autocomplete="off">
+
+                    <div class="mp-btn-row" style="margin-top: 20px;">
+                        <button class="mp-btn mp-btn--secondary" id="mp-btn-back" type="button"><span
+                                class="mp-btn-icon"
+                                style="font-size: 16px; margin-top: -3px; margin-right: 4px;">←</span><span>Back</span></button>
+                        <button class="mp-btn mp-btn--primary" id="mp-btn-join-action" type="button">Join</button>
                     </div>
                 </div>
 
-                <!-- Screen 2B: Connecting -->
                 <div class="mp-screen" id="mp-screen-connecting">
                     <div class="mp-connecting">
                         <div class="mp-progress-bar">
@@ -338,7 +340,6 @@
                     </div>
                 </div>
 
-                <!-- Screen 3A: Host Lobby -->
                 <div class="mp-screen" id="mp-screen-lobby-host">
                     <div style="text-align: center; margin-bottom: 10px;">
                         <span
@@ -349,14 +350,15 @@
                         <span class="mp-room-code-text" id="mp-room-code" style="font-size: 16px;">------</span>
                         <button class="mp-copy-btn" id="mp-copy-btn" type="button">Copy 🔗</button>
                     </div>
+                    <p class="mp-invite-hint">Copy and share the link with friends to invite them to your room</p>
                     <div class="mp-divider"></div>
                     <span class="mp-player-count" id="mp-player-count">Players (0/6)</span>
                     <ul class="mp-roster" id="mp-roster"></ul>
                     <button class="mp-btn mp-btn--primary" id="mp-btn-start" type="button"
-                        style="margin-top: 16px; width: 100%;"><span>Start Game</span><span class="mp-btn-icon">▶</span></button>
+                        style="margin-top: 16px; width: 100%;"><span>Start Game</span><span
+                            class="mp-btn-icon">▶</span></button>
                 </div>
 
-                <!-- Screen 3B: Client Lobby -->
                 <div class="mp-screen" id="mp-screen-lobby-client">
                     <div style="text-align: center; margin-bottom: 8px;">
                         <span
@@ -372,7 +374,6 @@
                     <button class="mp-ready-btn mp-ready-btn--unready" id="mp-ready-btn" type="button">Ready ✓</button>
                 </div>
 
-                <!-- Screen 4: Game Over -->
                 <div class="mp-screen" id="mp-screen-gameover">
                     <div id="mp-gameover-content"></div>
                 </div>

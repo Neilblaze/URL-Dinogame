@@ -108,6 +108,42 @@
     }
 }
 
+.mp-fab--live-session {
+    background: var(--mp-text);
+    color: #fff;
+    border-color: var(--mp-text);
+}
+
+.mp-fab--live-session:hover {
+    background: #000;
+}
+
+.mp-fab-live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--mp-red);
+    border: 1px solid var(--mp-border);
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    animation: mp-blink-hard 1s steps(2, start) infinite;
+}
+
+@keyframes mp-blink-hard {
+
+    0%,
+    100% {
+        background: var(--mp-red);
+    }
+
+    50% {
+        background: #fff;
+    }
+}
+
 /* Hide FAB on mobile */
 @media (hover: none) and (pointer: coarse) {
     .mp-fab {
@@ -464,6 +500,16 @@
 
 /* ── Lobby Roster ────────────────────────────────────────────── */
 
+.mp-invite-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    margin: 8px 0 0 0;
+    line-height: 1.5;
+    padding: 0 8px;
+}
+
 .mp-room-code-display {
     display: flex;
     align-items: center;
@@ -745,27 +791,78 @@
     font-weight: bold;
 }
 
-/* Game header */
 .mp-game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e0dbd3;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2.5px dashed var(--mp-border);
 }
 
-.mp-game-status {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: #16a34a;
-    background: #f0fdf4;
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1.5px solid #bbf7d0;
+.mp-live-lb-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--mp-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Game actions bar */
+.mp-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--mp-red);
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 2.5px solid var(--mp-border);
+    box-shadow: 2px 2px 0px var(--mp-border);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.mp-live-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--mp-red);
+    border-radius: 50%;
+    animation: mp-blink-hard 1s steps(2, start) infinite;
+}
+
+.mp-leaderboard-container {
+    background: transparent;
+    border-radius: 8px;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
+
+.mp-leaderboard--active .mp-lb-entry {
+    background: #fff;
+    border: 2.5px solid var(--mp-border);
+    margin-bottom: 8px;
+    margin-right: 3px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    box-shadow: 2px 2px 0px var(--mp-border);
+}
+
+.mp-leaderboard--active .mp-lb-entry:last-child {
+    margin-bottom: 0;
+}
+
+.mp-leaderboard--active .mp-lb-entry:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--mp-border);
+    border-color: var(--mp-border);
+}
+
 .mp-game-actions {
     display: flex;
     align-items: center;
@@ -776,35 +873,35 @@
 
 .mp-end-game-btn {
     font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
+    font-size: 8px;
     background: var(--mp-red);
     color: #fff;
     border: 2.5px solid var(--mp-border);
     border-radius: 8px;
-    padding: 10px 16px;
+    padding: 12px 16px;
     cursor: pointer;
-    transition: all 0.15s ease;
-    box-shadow: 3px 3px 0px #1a1a1a;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s;
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 1;
-    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 4px 4px 0px var(--mp-border);
 }
 
 .mp-end-game-btn:hover {
     transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0px #1a1a1a;
+    box-shadow: 5px 5px 0px var(--mp-border);
     background: #b91c1c;
 }
 
 .mp-end-game-btn:active {
     transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px #1a1a1a;
+    box-shadow: 2px 2px 0px var(--mp-border);
 }
 
 .mp-end-game-icon {
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .mp-game-info {
@@ -840,7 +937,6 @@
     }
 }
 
-/* Score flash animations */
 @media (prefers-reduced-motion: no-preference) {
     .mp-flash-green {
         animation: mp-flash-g 0.3s ease;
@@ -876,9 +972,15 @@
 .mp-settings-lock {
     position: absolute;
     inset: 0;
-    background: rgba(240, 235, 227, 0.92);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    background: 
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 10px,
+            rgba(26, 26, 26, 0.05) 10px,
+            rgba(26, 26, 26, 0.05) 20px
+        ),
+        rgba(240, 235, 227, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -886,20 +988,28 @@
     border-radius: var(--mp-radius);
 }
 
+.mp-settings-lock__glass {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #fff;
+    border: 2.5px solid var(--mp-border);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px var(--mp-border);
+    transform: translateY(0);
+}
+
+.mp-settings-lock__icon {
+    font-size: 14px;
+}
+
 .mp-settings-lock__text {
     font-family: 'Press Start 2P', monospace;
     font-size: 7px;
-    color: #999;
-    text-align: center;
-    line-height: 1.8;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 2px solid #e0dbd3;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: var(--mp-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* ── Countdown Overlay ───────────────────────────────────────── */
@@ -1005,52 +1115,6 @@
     letter-spacing: 2px;
 }
 
-/* CSS-only confetti */
-@media (prefers-reduced-motion: no-preference) {
-    .mp-confetti {
-        position: relative;
-        overflow: visible;
-    }
-
-    .mp-confetti::before,
-    .mp-confetti::after {
-        content: '🎉';
-        position: absolute;
-        font-size: 28px;
-        animation: mp-confetti-fall 2s ease-out forwards;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    .mp-confetti::before {
-        left: 15%;
-        top: -40px;
-        animation-delay: 0.2s;
-    }
-
-    .mp-confetti::after {
-        right: 15%;
-        top: -40px;
-        animation-delay: 0.5s;
-    }
-
-    @keyframes mp-confetti-fall {
-        0% {
-            transform: translateY(0) rotate(0deg) scale(1);
-            opacity: 1;
-        }
-
-        50% {
-            transform: translateY(60px) rotate(180deg) scale(1.2);
-            opacity: 0.8;
-        }
-
-        100% {
-            transform: translateY(120px) rotate(360deg) scale(0.8);
-            opacity: 0;
-        }
-    }
-}
 
 /* ── Toast System ────────────────────────────────────────────── */
 
@@ -1061,9 +1125,9 @@
     z-index: var(--mp-toast-z);
     display: flex;
     flex-direction: column-reverse;
-    gap: 10px;
+    gap: 12px;
     pointer-events: none;
-    max-width: 360px;
+    max-width: 400px;
 }
 
 @media (max-width: 700px) {
@@ -1078,68 +1142,201 @@
 .mp-toast {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
+    gap: 12px;
+    padding: 14px 16px;
     border: 2.5px solid var(--mp-border);
-    border-radius: 8px;
-    box-shadow: var(--mp-shadow-sm);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0px var(--mp-border), 0 4px 12px rgba(0, 0, 0, 0.15);
     font-family: 'Space Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--mp-text);
     pointer-events: auto;
     opacity: 0;
-    transform: translateX(30px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(30px) scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     line-height: 1.5;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .mp-toast--visible {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
 }
 
 .mp-toast--exit {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(30px) scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+
 .mp-toast--info {
-    background: #eef6ff;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
     border-color: var(--mp-blue);
 }
 
+.mp-toast--info .mp-toast__icon {
+    color: var(--mp-blue);
+}
+
+.mp-toast--success {
+    background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+    border-color: var(--mp-green);
+}
+
+.mp-toast--success .mp-toast__icon {
+    color: var(--mp-green);
+}
+
 .mp-toast--warning {
-    background: #fff8ee;
+    background: linear-gradient(135deg, #fff7ed 0%, #fffbf5 100%);
     border-color: var(--mp-accent);
 }
 
+.mp-toast--warning .mp-toast__icon {
+    color: var(--mp-accent);
+}
+
 .mp-toast--error {
-    background: #fff0f0;
+    background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
     border-color: var(--mp-red);
 }
 
-.mp-toast--neutral {
-    background: var(--mp-card);
+.mp-toast--error .mp-toast__icon {
+    color: var(--mp-red);
 }
 
+.mp-toast--neutral {
+    background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+    border-color: var(--mp-border);
+}
+
+.mp-toast--neutral .mp-toast__icon {
+    color: #666;
+}
+
+/* Icon styling */
+.mp-toast__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mp-toast__icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Message text */
 .mp-toast__msg {
     flex: 1;
-    line-height: 1.4;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
+/* Close button */
 .mp-toast__close {
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     color: #999;
-    padding: 0 2px;
+    padding: 4px;
     line-height: 1;
     flex-shrink: 0;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s, transform 0.08s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
 }
 
 .mp-toast__close:hover {
+    background: rgba(0, 0, 0, 0.05);
     color: var(--mp-text);
+    transform: scale(1.1);
+}
+
+.mp-toast__close:active {
+    transform: scale(0.95);
+}
+
+.mp-toast__close svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Progress bar */
+.mp-toast__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.mp-toast__progress-bar {
+    height: 100%;
+    width: 100%;
+    transform-origin: left;
+    transition: transform 0s linear;
+}
+
+.mp-toast--info .mp-toast__progress-bar {
+    background: var(--mp-blue);
+}
+
+.mp-toast--success .mp-toast__progress-bar {
+    background: var(--mp-green);
+}
+
+.mp-toast--warning .mp-toast__progress-bar {
+    background: var(--mp-accent);
+}
+
+.mp-toast--error .mp-toast__progress-bar {
+    background: var(--mp-red);
+}
+
+.mp-toast--neutral .mp-toast__progress-bar {
+    background: #666;
+}
+
+/* Hover pause effect */
+.mp-toast:hover .mp-toast__progress-bar {
+    animation-play-state: paused;
+}
+
+/* Stacking animation */
+@media (prefers-reduced-motion: no-preference) {
+    .mp-toast {
+        animation: mp-toast-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes mp-toast-bounce {
+        0% {
+            transform: translateX(100px) scale(0.8);
+            opacity: 0;
+        }
+        50% {
+            transform: translateX(-5px) scale(1.02);
+        }
+        100% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+    }
 }
 
 /* ── Bento Card Morph States ─────────────────────────────────── */
@@ -1153,15 +1350,6 @@
 
 .card--legend.mp-morphed .legend-list,
 .card--legend.mp-morphed>.card__label {
-    display: none;
-}
-
-/* Leaderboard mode: merge about + legend visually */
-.card--about.mp-leaderboard-mode {
-    grid-row: 2 / 4;
-}
-
-.card--legend.mp-leaderboard-mode {
     display: none;
 }
 
@@ -1353,4 +1541,84 @@
 .mp-waiting-lb-container .mp-leaderboard {
     max-height: 250px;
     overflow-y: auto;
+}
+
+
+/* ── Confirmation Modal ──────────────────────────────────────── */
+
+.mp-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10100;
+    background: rgba(26, 26, 26, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.mp-confirm-overlay--visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mp-confirm-modal {
+    background: var(--mp-card);
+    border: 3px solid var(--mp-border);
+    box-shadow: 8px 8px 0px #1a1a1a;
+    border-radius: var(--mp-radius);
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    position: relative;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.25s ease;
+}
+
+.mp-confirm-overlay--visible .mp-confirm-modal {
+    transform: scale(1) translateY(0);
+}
+
+.mp-confirm-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 2px dashed #e0dbd3;
+}
+
+.mp-confirm-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.mp-confirm-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--mp-text);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.mp-confirm-message {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+}
+
+.mp-confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.mp-confirm-actions .mp-btn {
+    flex: 1;
 }

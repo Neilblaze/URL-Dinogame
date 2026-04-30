@@ -611,10 +611,28 @@ P._triggerGameEnd=function(reason){
   this._onGameEnd(payload);
 };
 
-P.endGame=function(){if(this.isHost&&this.state===STATES.IN_GAME)this._triggerGameEnd('host_ended');};
+P.endGame=function(){
+  if(this.isHost&&this.state===STATES.IN_GAME){
+    // ★ Stop the game immediately for host
+    window.started = 0;
+    if (window.runGame) {
+      clearInterval(window.runGame);
+      window.runGame = null;
+    }
+    this._triggerGameEnd('host_ended');
+  }
+};
 
 P._onGameEnd=function(payload){
   if(this.state===STATES.GAME_OVER)return;
+  
+  // ★ Stop the game immediately
+  window.started = 0;
+  if (window.runGame) {
+    clearInterval(window.runGame);
+    window.runGame = null;
+  }
+  
   this.transition(STATES.GAME_OVER);
   if(this.scoreTimer){clearInterval(this.scoreTimer);this.scoreTimer=null;}
   if(this.lbTimer){clearInterval(this.lbTimer);this.lbTimer=null;}
@@ -622,12 +640,21 @@ P._onGameEnd=function(payload){
   // ★ Stop the heartbeat worker when game ends
   this._stopWorker();
   
-  // Write IDB log
+  // ★ Update URL bar to show game over state for multiplayer
   var localP=this.players.get(this.localPlayerId);
+  var finalScore = localP ? localP.score : 0;
+  setTimeout(function(){
+    history.replaceState(null, '', "#" + "··×·" + "YOU·DIED!" + "·" + finalScore + "pts");
+  }, 200);
+  setTimeout(function(){
+    history.replaceState(null, '', "#" + "···" + "GAME·OVER!" + "···" + finalScore + "pts");
+  }, 1600);
+  
+  // Write IDB log
   var log={id:safeUUID(),roomCode:this.roomCode,startedAt:this.startTimestamp||Date.now(),
     endedAt:Date.now(),durationSeconds:Math.round((payload.duration||0)/1000),reason:payload.reason,
     playerCount:this.players.size,finalLeaderboard:payload.finalBoard||[],
-    localPlayerRank:0,localPlayerScore:localP?localP.score:0,
+    localPlayerRank:0,localPlayerScore:finalScore,
     settings:{difficulty:localStorage.getItem('diffPref')||'med',speed:parseInt(localStorage.getItem('speedPref')||'100',10)}};
   if(payload.finalBoard){for(var i=0;i<payload.finalBoard.length;i++){if(payload.finalBoard[i].playerId===this.localPlayerId){log.localPlayerRank=payload.finalBoard[i].rank;break;}}}
   if(window.IDBStore)IDBStore.writeLog(log);
@@ -699,20 +726,30 @@ P._handleClientDisconnect=function(peerId){
 P._handleHostDisconnect=function(){
   var self=this;
   
-  // ★ Host migration: promote the first remaining player to host
-  if(self.state===STATES.LOBBY_CLIENT){
-    // Find the oldest remaining player (first in the list, excluding disconnected host)
+  // Remove the old host from players list
+  self.players.forEach(function(p, id) {
+    if (p.isHost) self.players.delete(id);
+  });
+  self.emit('lobbyUpdate',self._playerArray());
+  
+  // ★ Host migration: promote the first remaining player to host deterministically
+  if(self.state===STATES.LOBBY_CLIENT || self.state===STATES.GAME_OVER){
     var remainingPlayers=[];
     self.players.forEach(function(p){
-      if(p.id!==self.localPlayerId&&!p.isDisconnected){
-        remainingPlayers.push(p);
-      }
+      if(!p.isDisconnected) remainingPlayers.push(p);
     });
     
+    // Sort deterministically by id
+    remainingPlayers.sort(function(a,b){ return a.id.localeCompare(b.id); });
+    
     if(remainingPlayers.length>0){
-      // This client becomes the new host
-      self._promoteToHost();
-      showToast('👑 You are now the host!','info');
+      var nextHost = remainingPlayers[0];
+      if (nextHost.id === self.localPlayerId) {
+        self._promoteToHost();
+        showToast('👑 You are now the host!','info');
+      } else {
+        self._reconnectToNewHost(nextHost);
+      }
       return;
     }
   }
@@ -725,10 +762,8 @@ P._handleHostDisconnect=function(){
 
 P._promoteToHost=function(){
   var self=this;
-  
   console.log('[MP] Promoting to host');
   
-  // Update local state
   self.isHost=true;
   var localP=self.players.get(self.localPlayerId);
   if(localP){
@@ -736,83 +771,38 @@ P._promoteToHost=function(){
     localP.isReady=true;
   }
   
-  // Close old host connection and clear it
-  var oldHostConn=null;
-  var keys=Object.keys(self.connections);
-  if(keys.length>0){
-    oldHostConn=self.connections[keys[0]];
-    if(oldHostConn){
-      oldHostConn._mpDestroying=true;
-      try{oldHostConn.close();}catch(e){}
-    }
-  }
-  
-  // Clear all connections - we'll rebuild as host
+  self.hostPeerId=self.peer.id;
   self.connections={};
   
-  // Destroy old peer and create new one as host
-  if(self.peer){
-    try{self.peer.destroy();}catch(e){}
-    self.peer=null;
-  }
-  
-  // Create new peer as host
-  self.peer=new Peer(undefined,self._peerConfig());
-  
-  self.peer.on('open',function(){
-    self.hostPeerId=self.peer.id;
-    console.log('[MP] New host peer ID:',self.hostPeerId);
-    
-    // Notify all remaining players about host migration
-    self._broadcast('HOST_MIGRATION',{
-      newHostId:self.localPlayerId,
-      newHostName:self.localPlayerName,
-      newHostPeerId:self.hostPeerId,
-      roomCode:self.roomCode
-    });
-    
-    // Transition to host lobby
-    self.transition(STATES.LOBBY_HOST);
-    self.emit('roomCreated',{roomCode:self.roomCode,hostPeerId:self.hostPeerId});
-    self.emit('lobbyUpdate',self._playerArray());
-    
-    // Start accepting connections
+  if (self.peer) {
+    // Start accepting connections on existing peer
     self.peer.on('connection',function(conn){
       console.log('[MP] New host received connection from:',conn.peer);
       self.joinQueue.enqueue(function(){return self._processJoin(conn);});
     });
-    
-    self.peer.on('disconnected',function(){
-      console.warn('[MP] New host disconnected from signaling server, reconnecting...');
-      if(self.peer&&!self.peer.destroyed)self.peer.reconnect();
-    });
-    
-    self.peer.on('error',function(err){
-      console.error('[MP] New host peer error',err);
-      showToast('⚠ Host network error. Falling back to single player.','error');
-      self.destroy();
-    });
-  });
+  }
   
-  // Restart worker as host
+  if (self.state !== STATES.GAME_OVER) {
+    self.transition(STATES.LOBBY_HOST);
+  }
+  self.emit('roomCreated',{roomCode:self.roomCode,hostPeerId:self.hostPeerId});
+  self.emit('lobbyUpdate',self._playerArray());
+  
   self._stopWorker();
   setTimeout(function(){
     self._startWorker();
   },100);
 };
 
-P._reconnectToNewHost=function(payload){
+P._reconnectToNewHost=function(newHost){
   var self=this;
+  console.log('[MP] Reconnecting to new host:',newHost.name);
   
-  console.log('[MP] Reconnecting to new host:',payload.newHostName);
-  
-  // Update player list - mark new host
   self.players.forEach(function(p){
-    p.isHost=(p.id===payload.newHostId);
+    p.isHost=(p.id===newHost.id);
     if(p.isHost)p.isReady=true;
   });
   
-  // Close old connection
   var keys=Object.keys(self.connections);
   if(keys.length>0){
     var oldConn=self.connections[keys[0]];
@@ -823,62 +813,41 @@ P._reconnectToNewHost=function(payload){
   }
   self.connections={};
   
-  // Destroy old peer
-  if(self.peer){
-    try{self.peer.destroy();}catch(e){}
-    self.peer=null;
-  }
+  if (!self.peer) return;
+
+  var conn=self.peer.connect(newHost.peerId,{reliable:true,serialization:'json'});
   
-  // Create new peer and connect to new host
-  self.peer=new Peer(undefined,self._peerConfig());
-  
-  self.peer.on('open',function(){
-    console.log('[MP] Client reconnecting to new host peer:',payload.newHostPeerId);
+  conn.on('open',function(){
+    conn._mpClosed=false;
+    console.log('[MP] Reconnected to new host');
+    self.connections[conn.peer]=conn;
+    self._send(conn,'JOIN',{playerName:self.localPlayerName,playerId:self.localPlayerId});
     
-    var conn=self.peer.connect(payload.newHostPeerId,{reliable:true,serialization:'json'});
+    conn.on('data',function(msg){
+      self._handleMessage(conn,msg);
+    });
     
-    conn.on('open',function(){
-      conn._mpClosed=false;
-      console.log('[MP] Reconnected to new host');
-      self.connections[conn.peer]=conn;
-      
-      // Re-send JOIN to new host
-      self._send(conn,'JOIN',{playerName:self.localPlayerName,playerId:self.localPlayerId});
-      
-      // Set up handlers
-      conn.on('data',function(msg){
-        self._handleMessage(conn,msg);
-      });
-      
-      conn.on('close',function(){
-        if(conn._mpClosed||conn._mpDestroying)return;
-        conn._mpClosed=true;
-        if(self.state!==STATES.IDLE&&self.state!==STATES.GAME_OVER)self._handleHostDisconnect();
-      });
-      
-      conn.on('error',function(err){
-        console.error('[MP] Reconnection error:',err);
-        if(self.state!==STATES.IDLE&&self.state!==STATES.GAME_OVER)self._handleHostDisconnect();
-      });
-      
-      showToast('🔄 Reconnected to new host: '+payload.newHostName,'success');
-      self.emit('lobbyUpdate',self._playerArray());
+    conn.on('close',function(){
+      if(conn._mpClosed||conn._mpDestroying)return;
+      conn._mpClosed=true;
+      if(self.state!==STATES.IDLE&&self.state!==STATES.GAME_OVER)self._handleHostDisconnect();
     });
     
     conn.on('error',function(err){
-      console.error('[MP] Failed to reconnect to new host:',err);
-      showToast('⚠ Failed to reconnect. Room closed.','error');
-      self.destroy();
+      console.error('[MP] Reconnection error:',err);
+      if(self.state!==STATES.IDLE&&self.state!==STATES.GAME_OVER)self._handleHostDisconnect();
     });
+    
+    showToast('🔄 Reconnected to new host: '+newHost.name,'success');
+    self.emit('lobbyUpdate',self._playerArray());
   });
   
-  self.peer.on('error',function(err){
-    console.error('[MP] Peer error during reconnection:',err);
-    showToast('⚠ Reconnection failed. Room closed.','error');
+  conn.on('error',function(err){
+    console.error('[MP] Failed to reconnect to new host:',err);
+    showToast('⚠ Failed to reconnect. Room closed.','error');
     self.destroy();
   });
   
-  // Restart worker
   self._stopWorker();
   setTimeout(function(){
     self._startWorker();

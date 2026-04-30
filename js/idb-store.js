@@ -1,28 +1,13 @@
-/**
- * idb-store.js — IndexedDB wrapper for Dino-C Multiplayer post-game logs
- *
- * API:
- *   IDBStore.writeLog(gameLog)    → Promise<void>
- *   IDBStore.readLogs()           → Promise<GameLog[]>
- *   IDBStore.cleanExpired()       → Promise<void>
- *
- * Database: dinoc-multiplayer, version 1
- * Object store: game_logs (keyPath: 'id')
- * TTL: 7 days from game start
- *
- * All operations wrapped in try/catch — failures are silent (§11.19).
- */
 "use strict";
 
 (function () {
     var DB_NAME = 'dinoc-multiplayer';
     var DB_VERSION = 1;
     var STORE_NAME = 'game_logs';
-    var TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+    var TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
     var dbPromise = null;
 
-    /** Open (or create) the database. Returns a Promise<IDBDatabase>. */
     function openDB() {
         if (dbPromise) return dbPromise;
         dbPromise = new Promise(function (resolve, reject) {
@@ -53,16 +38,10 @@
         return dbPromise;
     }
 
-    /**
-     * Write a game log entry to IndexedDB.
-     * @param {object} gameLog — must have an `id` field (crypto.randomUUID())
-     * @returns {Promise<void>}
-     */
     function writeLog(gameLog) {
         return openDB().then(function (db) {
             return new Promise(function (resolve, reject) {
                 try {
-                    // Ensure TTL is set
                     if (!gameLog.ttl) {
                         gameLog.ttl = (gameLog.startedAt || Date.now()) + TTL_MS;
                     }
@@ -79,15 +58,9 @@
                     reject(err);
                 }
             });
-        }).catch(function () {
-            // Silent failure per §11.19
-        });
+        }).catch(function () {});
     }
 
-    /**
-     * Read all game logs from IndexedDB.
-     * @returns {Promise<Array>}
-     */
     function readLogs() {
         return openDB().then(function (db) {
             return new Promise(function (resolve, reject) {
@@ -110,11 +83,6 @@
         });
     }
 
-    /**
-     * Delete expired entries where ttl < Date.now().
-     * Called once on page load (fire-and-forget).
-     * @returns {Promise<void>}
-     */
     function cleanExpired() {
         return openDB().then(function (db) {
             return new Promise(function (resolve, reject) {
@@ -143,19 +111,15 @@
                     reject(err);
                 }
             });
-        }).catch(function () {
-            // Silent failure
-        });
+        }).catch(function () {});
     }
 
-    // Expose globally
     window.IDBStore = {
         writeLog: writeLog,
         readLogs: readLogs,
         cleanExpired: cleanExpired
     };
 
-    // Run TTL cleanup on load (async, non-blocking)
     if (typeof indexedDB !== 'undefined') {
         setTimeout(function () { cleanExpired(); }, 100);
     }

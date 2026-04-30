@@ -1,8 +1,6 @@
 "use strict";
 
-/* ── Settings: Difficulty & Game Speed ─── */
 (function () {
-    /* ── Difficulty presets ─────────────── */
     var diffPresets = {
         easy: { enemyMin: 30, enemyMax: 10 },
         med: { enemyMin: 26, enemyMax: 6 },
@@ -36,7 +34,6 @@
 
             applyDifficulty(diff);
             
-            // Sync to multiplayer if in lobby
             if(window._mp&&window._mp.isHost&&(window._mp.state==='LOBBY_HOST')){
                 var spd=parseInt(localStorage.getItem('speedPref')||'100',10);
                 window._mp.syncSettings({difficulty:diff,speed:spd});
@@ -53,12 +50,10 @@
         window._diffPreset = p;
     }
 
-    /* ── Speed slider ──────────────────── */
     var slider = document.getElementById('speed-slider');
     var label = document.getElementById('speed-value');
-    var baseInterval = 100; // default game tick (ms)
+    var baseInterval = 100;
 
-    // Load stored speed or default to 100
     var storedSpeed = localStorage.getItem('speedPref') || '100';
     var initialSpeed = parseInt(storedSpeed, 10);
     if (isNaN(initialSpeed)) initialSpeed = 100;
@@ -67,7 +62,6 @@
         var multiplier = pct / 100;
         if (label) label.textContent = multiplier.toFixed(1) + '\u00d7';
 
-        // Lower interval = faster game.
         var newInterval = Math.round(baseInterval / multiplier);
         window._gameTickMs = newInterval;
 
@@ -87,7 +81,6 @@
             var pct = parseInt(slider.value, 10);
             localStorage.setItem('speedPref', pct.toString());
             applySpeed(pct);
-            // Sync to multiplayer if in lobby
             if(window._mp&&window._mp.isHost&&(window._mp.state==='LOBBY_HOST')){
                 window._mp.syncSettings({difficulty:currentDiff,speed:pct});
             }
