@@ -35,6 +35,12 @@
             btn.classList.add('active');
 
             applyDifficulty(diff);
+            
+            // Sync to multiplayer if in lobby
+            if(window._mp&&window._mp.isHost&&(window._mp.state==='LOBBY_HOST')){
+                var spd=parseInt(localStorage.getItem('speedPref')||'100',10);
+                window._mp.syncSettings({difficulty:diff,speed:spd});
+            }
         });
     }
 
@@ -81,6 +87,10 @@
             var pct = parseInt(slider.value, 10);
             localStorage.setItem('speedPref', pct.toString());
             applySpeed(pct);
+            // Sync to multiplayer if in lobby
+            if(window._mp&&window._mp.isHost&&(window._mp.state==='LOBBY_HOST')){
+                window._mp.syncSettings({difficulty:currentDiff,speed:pct});
+            }
         });
     }
 

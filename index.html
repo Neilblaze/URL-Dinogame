@@ -17,8 +17,14 @@
     <meta name="application-name" content="Dino-c!">
     <meta name="msapplication-TileColor" content="#f0ebe3">
     <meta name="theme-color" content="#f0ebe3">
-    <link rel="stylesheet" type="text/css" href="styles.min.css">
-    <script src="script.min.js" defer="defer"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="multiplayer.css">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="idb-store.js" defer="defer"></script>
+    <script src="toast.js" defer="defer"></script>
+    <script src="multiplayer.js" defer="defer"></script>
+    <script src="room-ui.js" defer="defer"></script>
+    <script src="script.js" defer="defer"></script>
     <script src="settings.js" defer="defer"></script>
 </head>
 
@@ -75,7 +81,11 @@
         <!-- Header -->
         <header class="header">
             <div class="logo">DINO<span>-C</span></div>
-            <div class="badge">URL BAR GAME</div>
+            <button class="mp-fab" id="mp-fab" type="button" aria-label="Open Multiplayer">
+                <img src="https://res.cloudinary.com/dmlwye965/image/upload/v1777545974/33308_uwaruj.png"
+                    class="mp-fab__icon" style="filter: invert(1);" alt="🎮">
+                <span class="mp-fab__label">Multiplayer</span>
+            </button>
         </header>
 
         <!-- Bento Grid -->
@@ -275,6 +285,101 @@
     <audio id="gameover" src="assets/gameover.mp3" preload="auto"></audio>
     <audio id="faaah" src="assets/faaah.mp3" preload="auto"></audio>
     <audio id="toggle-sound" src="assets/toggle.mp3" preload="auto"></audio>
+    <audio id="join-sound" src="assets/join.mp3" preload="auto"></audio>
+    <audio id="leave-sound" src="assets/leave.mp3" preload="auto"></audio>
+
+    <!-- Multiplayer Modal -->
+    <div class="mp-modal-overlay" id="mp-modal-overlay">
+        <div class="mp-modal" role="dialog" aria-labelledby="mp-modal-title" aria-modal="true">
+            <div class="mp-modal__header">
+                <h2 class="mp-modal__title" id="mp-modal-title">
+                    <img src="https://res.cloudinary.com/dmlwye965/image/upload/v1777545974/33308_uwaruj.png"
+                        class="mp-modal__icon" alt="🎮"> MULTIPLAYER
+                </h2>
+                <button class="mp-modal__close" id="mp-modal-close" type="button" aria-label="Close">×</button>
+            </div>
+            <div class="mp-modal__body">
+
+                <!-- Screen 1: Identity -->
+                <div class="mp-screen mp-screen--active" id="mp-screen-identity">
+                    <label class="mp-input-label" for="mp-name-input">Your Name:</label>
+                    <input type="text" id="mp-name-input" class="mp-name-input" maxlength="16"
+                        placeholder="Enter your name" autocomplete="off">
+                    <div class="mp-btn-row">
+                        <button class="mp-btn mp-btn--primary" id="mp-btn-create" type="button">Create Room</button>
+                        <button class="mp-btn mp-btn--secondary" id="mp-btn-join-nav" type="button">Join Room</button>
+                    </div>
+                </div>
+
+                <!-- Screen 2A: Join Instructions -->
+                <div class="mp-screen" id="mp-screen-join">
+                    <div style="text-align: center; padding: 20px;">
+                        <p
+                            style="font-family: 'Space Mono', monospace; font-size: 12px; color: #666; margin-bottom: 16px;">
+                            To join a multiplayer game, you need an <strong>invite link</strong> from the host.
+                        </p>
+                        <p
+                            style="font-family: 'Space Mono', monospace; font-size: 11px; color: #999; margin-bottom: 20px;">
+                            The host can copy the invite link from their lobby screen and share it with you.
+                        </p>
+                        <div class="mp-btn-row">
+                            <button class="mp-btn mp-btn--secondary" id="mp-btn-back" type="button">← Back</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Screen 2B: Connecting -->
+                <div class="mp-screen" id="mp-screen-connecting">
+                    <div class="mp-connecting">
+                        <div class="mp-progress-bar">
+                            <div class="mp-progress-fill"></div>
+                        </div>
+                        <p class="mp-connecting__text">Finding host...</p>
+                    </div>
+                </div>
+
+                <!-- Screen 3A: Host Lobby -->
+                <div class="mp-screen" id="mp-screen-lobby-host">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <span
+                            style="font-family: 'Press Start 2P', monospace; font-size: 9px; color: #999; text-transform: uppercase; letter-spacing: 1px;">Room
+                            Name</span>
+                    </div>
+                    <div class="mp-room-code-display">
+                        <span class="mp-room-code-text" id="mp-room-code" style="font-size: 16px;">------</span>
+                        <button class="mp-copy-btn" id="mp-copy-btn" type="button">Copy 🔗</button>
+                    </div>
+                    <div class="mp-divider"></div>
+                    <span class="mp-player-count" id="mp-player-count">Players (0/6)</span>
+                    <ul class="mp-roster" id="mp-roster"></ul>
+                    <button class="mp-btn mp-btn--primary" id="mp-btn-start" type="button"
+                        style="margin-top: 16px; width: 100%;"><span>Start Game</span><span class="mp-btn-icon">▶</span></button>
+                </div>
+
+                <!-- Screen 3B: Client Lobby -->
+                <div class="mp-screen" id="mp-screen-lobby-client">
+                    <div style="text-align: center; margin-bottom: 8px;">
+                        <span
+                            style="font-family: 'Press Start 2P', monospace; font-size: 9px; color: #999; text-transform: uppercase; letter-spacing: 1px;">Room
+                            Name</span>
+                    </div>
+                    <div class="mp-room-code-display">
+                        <span class="mp-room-code-text" id="mp-room-code-client" style="font-size: 16px;">------</span>
+                    </div>
+                    <div class="mp-divider"></div>
+                    <span class="mp-player-count" id="mp-player-count-client">Players (0/6)</span>
+                    <ul class="mp-roster" id="mp-roster-client"></ul>
+                    <button class="mp-ready-btn mp-ready-btn--unready" id="mp-ready-btn" type="button">Ready ✓</button>
+                </div>
+
+                <!-- Screen 4: Game Over -->
+                <div class="mp-screen" id="mp-screen-gameover">
+                    <div id="mp-gameover-content"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </body>
 

@@ -79,7 +79,7 @@ function gameLogic() {
             enemy[i] = 55;
             window._diffPreset ? (enemySpawn = randomIntFromInterval(window._diffPreset.enemyMin, window._diffPreset.enemyMax)) : score < 50 ? (enemySpawn = randomIntFromInterval(26, 6)) : score < 180 ? (enemySpawn = randomIntFromInterval(20, 4)) : score < 280 ? (enemySpawn = randomIntFromInterval(13, 4)) : (enemySpawn = randomIntFromInterval(8, 4))
         }
-        for (i = 0; i < enemy.length; i++) --enemy[i], enemy[i] >= 0 && (enemy[i] == playerPos ? (invincible == 1 ? (grid[enemy[i]] = "·" + timeLeft + "+", enemy[i] = 0, --score) : jump > 2 ? (playerJump(), enemy[i] = 0) : (grid[enemy[i]] = "·" + "×" + "!" + "×", enemy[i] = 0, --score, (button !== null && button.innerHTML == "Sound: on" && safePlay("faaah")), started = 0)) : (grid[enemy[i]] = "X"));
+        for (i = 0; i < enemy.length; i++) --enemy[i], enemy[i] >= 0 && (enemy[i] == playerPos ? (invincible == 1 ? (grid[enemy[i]] = "·" + timeLeft + "+", enemy[i] = 0, --score) : jump > 2 ? (playerJump(), enemy[i] = 0) : (grid[enemy[i]] = "·" + "×" + "!" + "×", enemy[i] = 0, --score, (button !== null && button.innerHTML == "Sound: on" && !window._mp && safePlay("faaah")), started = 0)) : (grid[enemy[i]] = "X"));
         if (powerupSpawn > 0) --powerupSpawn;
         else if (!(food.includes(53)) && !(enemy.includes(54))) {
             i = 0;
@@ -113,7 +113,7 @@ function gameLogic() {
             scoreDisplay.classList.remove("new-record");
         }
         if (scoreLabel) scoreLabel.textContent = "High Score";
-        if (button !== null && button.innerHTML == "Sound: on") {
+        if (button !== null && button.innerHTML == "Sound: on" && !window._mp) {
             setTimeout(function() { safePlay("gameover"); }, 600);
         }
         grid = []; food = []; fruit = []; enemy = []; powerup = [];
@@ -121,14 +121,18 @@ function gameLogic() {
         fruitSpawn = randomIntFromInterval(150, 80);
         enemySpawn = 30;
         powerupSpawn = randomIntFromInterval(250, 60);
-        localStorage.getItem("highScore") < score && localStorage.setItem("highScore", score);
+        // ★ Only save high score in single-player mode
+        if(!window._mp){
+            localStorage.getItem("highScore") < score && localStorage.setItem("highScore", score);
+        }
         setTimeout(function() {
             history.replaceState(null, '', "#" + "··×·" + "YOU·DIED!" + "·" + score + "pts");
             button !== null && displayScore();
         }, 200);
         setTimeout(function() {
             history.replaceState(null, '', "#" + "···" + "GAME·OVER!" + "···" + score + "pts" + "··»··" + "press·any·key·to·replay");
-            startGame();
+            // ★ Don't auto-restart in multiplayer mode
+            if(!window._mp)startGame();
         }, 1600);
     }
 }
@@ -146,6 +150,11 @@ function startGame() {
     document.onkeydown = function (o) {
         var e = o.keyCode;
         if (e == 224 || e == 91 || countingDown == 1) return;
+        // Don't start game if user is typing in an input field or modal is open
+        var target = o.target || o.srcElement;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+        var modal = document.getElementById('mp-modal-overlay');
+        if (modal && modal.classList.contains('mp-modal-overlay--open')) return;
         o.preventDefault();
         countingDown = 1;
         score = 0;
