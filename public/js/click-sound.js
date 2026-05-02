@@ -9,8 +9,16 @@
   var audioCheckInterval = null;
 
   function initAudioPool() {
+    if (typeof window._workerBase === 'undefined') {
+      setTimeout(initAudioPool, 50);
+      return;
+    }
+    
+    var basePath = window._workerBase || './';
+    if (!basePath.endsWith('/')) basePath += '/';
+    
     for (var i = 0; i < poolSize; i++) {
-      var audio = new Audio('assets/audio/click-soft.mp3');
+      var audio = new Audio(basePath + 'assets/audio/click-soft.mp3');
       audio.preload = 'auto';
       audio.volume = 0.4;
       audioPool.push(audio);
