@@ -10,8 +10,13 @@
     var currentDiff = localStorage.getItem('diffPref') || 'med';
     if (!diffPresets[currentDiff]) currentDiff = 'med';
 
-    var diffToggle = document.getElementById('difficulty-toggle');
-    if (diffToggle) {
+    function initDifficultyToggle() {
+        var diffToggle = document.getElementById('difficulty-toggle');
+        if (!diffToggle) {
+            setTimeout(initDifficultyToggle, 50);
+            return;
+        }
+
         var btns = diffToggle.querySelectorAll('.diff-btn');
         for (var i = 0; i < btns.length; i++) {
             if (btns[i].getAttribute('data-diff') === currentDiff) {
@@ -41,6 +46,8 @@
         });
     }
 
+    initDifficultyToggle();
+
     function applyDifficulty(diff) {
         var p = diffPresets[diff];
         if (!p) return;
@@ -50,28 +57,33 @@
         window._diffPreset = p;
     }
 
-    var slider = document.getElementById('speed-slider');
-    var label = document.getElementById('speed-value');
-    var baseInterval = 100;
-
-    var storedSpeed = localStorage.getItem('speedPref') || '100';
-    var initialSpeed = parseInt(storedSpeed, 10);
-    if (isNaN(initialSpeed)) initialSpeed = 100;
-
-    function applySpeed(pct) {
-        var multiplier = pct / 100;
-        if (label) label.textContent = multiplier.toFixed(1) + '\u00d7';
-
-        var newInterval = Math.round(baseInterval / multiplier);
-        window._gameTickMs = newInterval;
-
-        if (typeof window.runGame !== 'undefined' && typeof window.started !== 'undefined' && window.started === 1) {
-            clearInterval(window.runGame);
-            window.runGame = setInterval(window.gameLogic, newInterval);
+    function initSpeedSlider() {
+        var slider = document.getElementById('speed-slider');
+        var label = document.getElementById('speed-value');
+        
+        if (!slider || !label) {
+            setTimeout(initSpeedSlider, 50);
+            return;
         }
-    }
 
-    if (slider) {
+        var baseInterval = 100;
+        var storedSpeed = localStorage.getItem('speedPref') || '100';
+        var initialSpeed = parseInt(storedSpeed, 10);
+        if (isNaN(initialSpeed)) initialSpeed = 100;
+
+        function applySpeed(pct) {
+            var multiplier = pct / 100;
+            if (label) label.textContent = multiplier.toFixed(1) + '\u00d7';
+
+            var newInterval = Math.round(baseInterval / multiplier);
+            window._gameTickMs = newInterval;
+
+            if (typeof window.runGame !== 'undefined' && typeof window.started !== 'undefined' && window.started === 1) {
+                clearInterval(window.runGame);
+                window.runGame = setInterval(window.gameLogic, newInterval);
+            }
+        }
+
         slider.value = initialSpeed;
         applySpeed(initialSpeed);
 
@@ -86,6 +98,8 @@
             }
         });
     }
+
+    initSpeedSlider();
 
     setTimeout(function () {
         applyDifficulty(currentDiff);

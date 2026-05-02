@@ -986,6 +986,7 @@
     justify-content: center;
     z-index: 10;
     border-radius: var(--mp-radius);
+    pointer-events: all;
 }
 
 .mp-settings-lock__glass {
