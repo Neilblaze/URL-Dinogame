@@ -1,5 +1,13 @@
 "use strict";
+
 (function () {
+  var urlParams = new URLSearchParams(window.location.search);
+  var deepLinkRoom = urlParams.get('room');
+  if (deepLinkRoom) {
+    console.log('[Deep Link] Room parameter captured early:', deepLinkRoom);
+    window._deepLinkPeerId = deepLinkRoom;
+  }
+
   var mp = null;
   var overlay, modal, screens = {};
   var originalCardAbout = '', originalCardLegend = '', originalCardActions = '';
@@ -7,6 +15,13 @@
 
   function init() {
     if (typeof MultiplayerManager === 'undefined') return;
+    
+    var fab = document.getElementById('mp-fab');
+    if (!fab) {
+      setTimeout(init, 50);
+      return;
+    }
+    
     mp = new MultiplayerManager();
     window._mp = mp;
     cacheOriginalCards();
@@ -214,7 +229,12 @@
     var btn = document.getElementById('mp-copy-btn');
     if (!btn) return;
     btn.onclick = function () {
-      var url = window.location.origin + window.location.pathname + '?room=' + hostPeerId;
+      // Use the base URL from Vite's import.meta.env or fallback to current location
+      var baseUrl = window.location.origin;
+      var basePath = window._workerBase || '/';
+      // Ensure basePath ends with /
+      if (!basePath.endsWith('/')) basePath += '/';
+      var url = baseUrl + basePath + '?room=' + hostPeerId;
       navigator.clipboard.writeText(url).then(function () {
         btn.textContent = 'Copied! ✓'; setTimeout(function () { btn.textContent = 'Copy 🔗'; }, 2000);
       }).catch(function () { btn.textContent = 'Failed'; setTimeout(function () { btn.textContent = 'Copy 🔗'; }, 2000); });
@@ -793,25 +813,59 @@
   }
 
   function handleDeepLink() {
-    var params = new URLSearchParams(window.location.search);
-    var room = params.get('room');
+    var room = window._deepLinkPeerId;
+    
+    console.log('[Deep Link] Checking for room parameter:', room);
+    console.log('[Deep Link] Full URL:', window.location.href);
+    console.log('[Deep Link] Search params:', window.location.search);
+    
     if (room) {
-      history.replaceState(null, '', window.location.pathname);
-      window._deepLinkPeerId = room;
+      console.log('[Deep Link] Room found, initiating join flow for room:', room);
+      // Clean up the URL by removing the query string (if it still exists)
+      if (window.location.search) {
+        var cleanPath = window.location.pathname;
+        history.replaceState(null, '', cleanPath);
+      }
 
-      setTimeout(function () {
+      // Wait for modal to be mounted by React before proceeding
+      function tryJoinRoom() {
+        var modalOverlay = document.getElementById('mp-modal-overlay');
+        var connectingScreen = document.getElementById('mp-screen-connecting');
+        var identityScreen = document.getElementById('mp-screen-identity');
+        
+        console.log('[Deep Link] Checking for modal elements:', {
+          modalOverlay: !!modalOverlay,
+          connectingScreen: !!connectingScreen,
+          identityScreen: !!identityScreen
+        });
+        
+        if (!modalOverlay || !connectingScreen || !identityScreen) {
+          // Modal not ready yet, retry
+          console.log('[Deep Link] Modal not ready, retrying in 50ms...');
+          setTimeout(tryJoinRoom, 50);
+          return;
+        }
+
+        console.log('[Deep Link] Modal ready, proceeding with join flow');
         var saved = localStorage.getItem('mp_player_name');
+        console.log('[Deep Link] Saved player name:', saved);
+        
         if (saved) {
+          console.log('[Deep Link] Auto-joining with saved name:', saved);
           openModal();
           showScreen('connecting');
-          mp.joinRoom(room, saved).catch(function () {
+          mp.joinRoom(room, saved).catch(function (err) {
+            console.error('[Deep Link] Join failed:', err);
             showScreen('identity');
             window._deepLinkPeerId = room;
           });
         } else {
+          console.log('[Deep Link] No saved name, showing identity screen');
           openModal();
           showScreen('identity');
-          showToast('👋 Enter your name to join the room', 'info');
+          if (typeof showToast === 'function') {
+            showToast('👋 Enter your name to join the room', 'info');
+          }
 
           var btnCreate = document.getElementById('mp-btn-create');
           if (btnCreate) btnCreate.style.display = 'none';
@@ -840,7 +894,9 @@
             };
           }
         }
-      }, 500);
+      }
+
+      tryJoinRoom();
     }
   }
 

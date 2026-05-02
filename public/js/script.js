@@ -1,4 +1,5 @@
 "use strict";
+
 document.body.classList.remove('no-js');
 var i = 0,
     jump = 0,
@@ -12,7 +13,7 @@ var i = 0,
     started = 0,
     score = 0,
     countingDown = 0,
-    runGame, powerupTime, button = document.querySelector(".sound-btn"),
+    runGame, powerupTime,
     grid = [],
     food = [],
     fruit = [],
@@ -79,7 +80,7 @@ function gameLogic() {
             enemy[i] = 55;
             window._diffPreset ? (enemySpawn = randomIntFromInterval(window._diffPreset.enemyMin, window._diffPreset.enemyMax)) : score < 50 ? (enemySpawn = randomIntFromInterval(26, 6)) : score < 180 ? (enemySpawn = randomIntFromInterval(20, 4)) : score < 280 ? (enemySpawn = randomIntFromInterval(13, 4)) : (enemySpawn = randomIntFromInterval(8, 4))
         }
-        for (i = 0; i < enemy.length; i++) --enemy[i], enemy[i] >= 0 && (enemy[i] == playerPos ? (invincible == 1 ? (grid[enemy[i]] = "·" + timeLeft + "+", enemy[i] = 0, --score) : jump > 2 ? (playerJump(), enemy[i] = 0) : (grid[enemy[i]] = "·" + "×" + "!" + "×", enemy[i] = 0, --score, (button !== null && button.innerHTML == "Sound: on" && (!window._mp || window._mp.state === 'IDLE') && safePlay("faaah")), started = 0)) : (grid[enemy[i]] = "X"));
+        for (i = 0; i < enemy.length; i++) --enemy[i], enemy[i] >= 0 && (enemy[i] == playerPos ? (invincible == 1 ? (grid[enemy[i]] = "·" + timeLeft + "+", enemy[i] = 0, --score) : jump > 2 ? (playerJump(), enemy[i] = 0) : (grid[enemy[i]] = "·" + "×" + "!" + "×", enemy[i] = 0, --score, (function() { var btn = document.querySelector(".sound-btn"); return btn !== null && btn.innerHTML == "Sound: on" && (!window._mp || window._mp.state === 'IDLE') && safePlay("faaah"); })(), started = 0)) : (grid[enemy[i]] = "X"));
         if (powerupSpawn > 0) --powerupSpawn;
         else if (!(food.includes(53)) && !(enemy.includes(54))) {
             i = 0;
@@ -113,7 +114,8 @@ function gameLogic() {
             scoreDisplay.classList.remove("new-record");
         }
         if (scoreLabel) scoreLabel.textContent = "High Score";
-        if (button !== null && button.innerHTML.indexOf("on") !== -1) {
+        var btn = document.querySelector(".sound-btn");
+        if (btn !== null && btn.innerHTML.indexOf("on") !== -1) {
             setTimeout(function () { safePlay("gameover"); }, 600);
         }
         grid = []; food = []; fruit = []; enemy = []; powerup = [];
@@ -127,7 +129,7 @@ function gameLogic() {
         }
         setTimeout(function () {
             history.replaceState(null, '', "#" + "··×·" + "YOU·DIED!" + "·" + score + "pts");
-            button !== null && displayScore();
+            displayScore();
         }, 200);
         setTimeout(function () {
             history.replaceState(null, '', "#" + "···" + "GAME·OVER!" + "···" + score + "pts" + "··»··" + "press·any·key·to·replay");
@@ -162,7 +164,8 @@ function startGame() {
         o.preventDefault();
         countingDown = 1;
         score = 0;
-        button !== null && (button.innerHTML.indexOf("on") !== -1 && safePlay("countdown"));
+        var btn = document.querySelector(".sound-btn");
+        btn !== null && (btn.innerHTML.indexOf("on") !== -1 && safePlay("countdown"));
         history.replaceState(null, '', "#" + "···3···▸");
         setTimeout(function () {
             history.replaceState(null, '', "#" + "···2···▸");
@@ -201,23 +204,63 @@ document.addEventListener('keydown', function unlockAudio() {
 }, { once: true });
 
 startGame();
-button !== null && (localStorage.getItem("soundPref") == "Sound: off" && (button.innerHTML = "🔇 Sound: off"));
-if (button !== null && localStorage.getItem("soundPref") !== "Sound: off") {
-    button.innerHTML = "🔊 Sound: on";
+
+// Initialize sound button preference when DOM is ready
+function initializeSoundButton() {
+    var btn = document.querySelector(".sound-btn");
+    if (!btn) {
+        // React hasn't mounted yet, wait and retry
+        setTimeout(initializeSoundButton, 50);
+        return;
+    }
+    
+    if (localStorage.getItem("soundPref") == "Sound: off") {
+        btn.innerHTML = "🔇 Sound: off";
+    }
+    if (localStorage.getItem("soundPref") !== "Sound: off") {
+        btn.innerHTML = "🔊 Sound: on";
+    }
 }
 
+// Start sound button initialization
+initializeSoundButton();
+
 function toggleSound() {
-    if (button.innerHTML.indexOf("on") !== -1) {
-        button.innerHTML = "🔇 Sound: off";
+    var btn = document.querySelector(".sound-btn");
+    if (!btn) return;
+    if (btn.innerHTML.indexOf("on") !== -1) {
+        btn.innerHTML = "🔇 Sound: off";
         localStorage.setItem("soundPref", "Sound: off");
     } else {
-        button.innerHTML = "🔊 Sound: on";
+        btn.innerHTML = "🔊 Sound: on";
         localStorage.setItem("soundPref", "Sound: on");
         safePlay("toggle-sound");
     }
 }
 
+// Make toggleSound available globally for React component
+window.toggleSound = toggleSound;
+
 function displayScore() {
-    (localStorage.getItem("highScore") === null) || (document.getElementById("high-score").innerHTML = localStorage.getItem("highScore"))
+    var highScoreEl = document.getElementById("high-score");
+    if (highScoreEl && localStorage.getItem("highScore") !== null) {
+        highScoreEl.innerHTML = localStorage.getItem("highScore");
+    }
 }
-button !== null && displayScore()
+
+// Make displayScore available globally
+window.displayScore = displayScore;
+
+// Initialize high score display when DOM is ready
+function initializeHighScore() {
+    var highScoreEl = document.getElementById("high-score");
+    if (!highScoreEl) {
+        // React hasn't mounted yet, wait and retry
+        setTimeout(initializeHighScore, 50);
+        return;
+    }
+    displayScore();
+}
+
+// Start initialization
+initializeHighScore();

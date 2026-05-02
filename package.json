@@ -1,0 +1,48 @@
+{
+  "name": "url-dinogame",
+  "version": "1.0.0",
+  "description": "A lightweight implementation of the classic Dinosaur game, played entirely within the browser's address bar with P2P multiplayer support",
+  "author": {
+    "name": "Neilblaze",
+    "url": "https://github.com/Neilblaze"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://neilblaze.github.io/URL-Dinogame/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neilblaze/URL-Dinogame.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Neilblaze/URL-Dinogame/issues"
+  },
+  "keywords": [
+    "game",
+    "dinosaur",
+    "dino-game",
+    "url-game",
+    "browser-game",
+    "multiplayer",
+    "webrtc",
+    "p2p",
+    "react",
+    "vite"
+  ],
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

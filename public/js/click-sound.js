@@ -1,4 +1,5 @@
 "use strict";
+
 (function() {
   var audioPool = [];
   var poolSize = 5;
@@ -9,7 +10,7 @@
 
   function initAudioPool() {
     for (var i = 0; i < poolSize; i++) {
-      var audio = new Audio('assets/click-soft.mp3');
+      var audio = new Audio('assets/audio/click-soft.mp3');
       audio.preload = 'auto';
       audio.volume = 0.4;
       audioPool.push(audio);
