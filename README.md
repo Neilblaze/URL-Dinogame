@@ -15,7 +15,7 @@ Play the [Live Demo](https://neilblaze.github.io/URL-Dinogame/) ✨
 > This project was recently updated to address browser compatibility issues. For context, invisible characters (previously used in this project) and spaces, such as the Zero-Width Space (U+200B), pose a significant security risk because they allow attackers to create homograph URLs that appear identical to legitimate sites but lead to phishing or malware. To counter this, Chrome and other Chromium-based browsers (like Edge and Brave) have implemented sophisticated protections that detect these hidden Unicode characters and automatically "defang" them by displaying the URL in Punycode (e.g., `xn--...`), which was breaking the aesthetics of the game.
 
 ## Interactive Web Demo 🔻
-https://github.com/user-attachments/assets/4188609e-6b4a-43c4-ba83-09ab7c000348
+https://github.com/user-attachments/assets/25f50b38-0c7b-4354-8f0f-1b578ce54e74
 
 
 ---
